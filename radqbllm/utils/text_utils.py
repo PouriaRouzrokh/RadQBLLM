@@ -2,17 +2,17 @@
 # Description: A script containing functionalities to process the text data.
 ##########################################################################################
 
-
 from typing import List
 
 from langchain.schema.document import Document
-from langchain.document_loaders import TextLoader
+from langchain.document_loaders import PyPDFLoader, TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 import tiktoken
 
 # ----------------------------------------------------------------------------------------
 # Helper functions
 # ----------------------------------------------------------------------------------------
+
 
 def count_tokens(string: str, encoding_name: str = "gpt-3.5-turbo") -> int:
     """Count the number of tokens in a string.
@@ -30,21 +30,25 @@ def count_tokens(string: str, encoding_name: str = "gpt-3.5-turbo") -> int:
 
     return num_tokens
 
+
 # ----------------------------------------------------------------------------------------
 # Chunking the text
 # ----------------------------------------------------------------------------------------
 
-def get_text(txt_file_path: str) -> List[Document]:
-    """Extract the raw text from a single PDF document, using pypdf library.
+
+def get_text(file_path: str) -> List[Document]:
+    """Extract the raw text from a single PDF or text document.
 
     Args:
-        pdf_path (str): absolute path to pdf document.
+        file_path (str): absolute path to a pdf or text document.
 
     Returns:
         List[Document]: list of langchain Document obejcts.
     """
-
-    loader = TextLoader(txt_file_path)
+    if file_path.endswith(".txt"):
+        loader = TextLoader(file_path)
+    elif file_path.endswith(".pdf"):
+        loader = PyPDFLoader(file_path)
     docs = loader.load()
 
     return docs
@@ -71,33 +75,21 @@ def chunk_docs(
     return docs
 
 
-def get_all_chunks(data: List[dict], **kwargs) -> List[Document]:
+def get_all_chunks(paths: List[str], **kwargs) -> List[Document]:
     """Split all the pdf files to chunks
 
     Args:
-        data (List[str]): List of document dictionaris
+        paths (List[str]): List of pdf paths.
         kwargs: to feed chunk_size and chunk_overlap to chunk_docs.
 
     Returns:
         List[Document]: List of chunked pieces as Documents.
     """
 
-    # Building a dictionary from the file path to the other fields.
-    path_dict = dict()
-    for data_point in data:
-        records = dict()
-        for key in data_point:
-            if key != 'path':
-                records[key] = data_point[key]
-        path_dict[data_point['path']] = records
-    
-    # Building the chunks
     docs = []
-    for data_point in data:
-        doc = get_text(data_point['path'])
-        docs.extend(doc)
-    chunks = chunk_docs(docs, **kwargs)
-    for chunk in chunks:
-         chunk.metadata.update(path_dict[chunk.metadata['source']])
-    
-    return chunks
+    for path in paths:
+        docs_ = get_text(path)
+        docs.extend(docs_)
+    docs = chunk_docs(docs, **kwargs)
+
+    return docs

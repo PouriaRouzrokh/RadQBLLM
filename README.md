@@ -8,6 +8,18 @@ will be updated with instructions on how to use the code.
 
 ## Logs
 
+### 08/09/2023:
+
+- Added the configs.py file.
+- Added the toy data.
+- Added the chain_prompts.py
+- Added the general_utils.py
+- Added the rqg.py
+- Added the demo.ipynb.
+- Added the main.py (currently empty)
+- Tested the pipeline on the toy data and in the demo notebook.
+- Tested the functionality of the pipeline with "GPT-4" model.
+
 ### 08/08/2023:
 
 - Created the repository.
