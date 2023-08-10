@@ -8,7 +8,7 @@ and run the app for generating radiology questions.
 
 A brief demo of our app is available below:
 
-<img src="demos/demo.gif" alt="demo" style="border: 1px solid black;">
+<img src="demos/demo.gif" alt="demo" style="border: 5px solid black;">
 
 ## Run
 
