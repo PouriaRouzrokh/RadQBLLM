@@ -7,7 +7,6 @@ import os
 import shutil
 from typing import List, Union
 
-import openai
 from langchain.llms import OpenAI
 from langchain.chains import RetrievalQA
 from langchain.chat_models import ChatOpenAI
@@ -18,8 +17,11 @@ from langchain.vectorstores import Chroma, VectorStore, DocArrayInMemorySearch
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import LLMChainExtractor, LLMChainFilter
 
+import sys
+
+sys.path.append("..")
 import configs
-from data.prompts import chain_prompts
+from data.prompts.chain_prompts import create_prompt
 from radqbllm.utils.text_utils import get_all_chunks
 from radqbllm.utils.general_utils import talk
 
@@ -153,6 +155,7 @@ def retrieval_qa(
     model: str = "gpt-3.5-turbo",
     temperature: float = 0.0,
     chain_type: str = "stuff",
+    prompt_keywords: dict = {"format": "", "difficulty_level": "", "criteria": ""},
     openai_api_key: str = configs.OPENAI_API_KEY,
 ) -> RetrievalQA:
     """Create a retrieval QA chain against a retriever.
@@ -165,6 +168,7 @@ def retrieval_qa(
                                     Could be one of "stuff",
                                     "map_reduce", "map_rerank", and "refine".
                                     Defaults to "stuff".
+        prompt_keywords (dict, optional): keywords to use in the prompt.
         openai_api_key (str, optional): OpenAI API key. Defaults to OPENAI_API_KEY.
 
     Returns:
@@ -179,7 +183,7 @@ def retrieval_qa(
 
     chain_type_kwargs = {}
     if chain_type == "stuff":
-        chain_type_kwargs["prompt"] = chain_prompts.STUFF_PROMPT
+        chain_type_kwargs["prompt"] = create_prompt(**prompt_keywords)
 
     qa_chain = RetrievalQA.from_chain_type(
         llm,
@@ -192,11 +196,16 @@ def retrieval_qa(
     return qa_chain
 
 
-def prepare_pipeline(source_paths: List[str], **kwargs) -> RetrievalQA:
+def prepare_pipeline(
+    source_paths: List[str],
+    prompt_keywords: dict = {"format": "", "difficulty_level": "", "criteria": ""},
+    **kwargs,
+) -> RetrievalQA:
     """Prepares the Retrieval QA pipeline.
 
     Args:
         source_paths (List[str]): list of source pdf files.
+        prompt_keywords (dict, optional): keywords to use in the prompt.
 
     Returns:
         RetrievalQA: chain for retrieval QA.
@@ -228,6 +237,7 @@ def prepare_pipeline(source_paths: List[str], **kwargs) -> RetrievalQA:
         if "TEMPERATURE" not in kwargs
         else kwargs["TEMPERATURE"],
         chain_type=configs.CHAIN_TYPE,
+        prompt_keywords=prompt_keywords,
     )
     talk(f"The pipeline is ready using the {configs.MODEL.upper()} model.")
     return chain

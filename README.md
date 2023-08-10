@@ -8,15 +8,19 @@ will be updated with instructions on how to use the code.
 
 ## Logs
 
+### 08/10/2023:
+
+- Added the `main.py` file to run the pipeline using GradIO.
+- Solved a bug that prevented correct query building and cosine similiarity calculation.
+
 ### 08/09/2023:
 
-- Added the configs.py file.
-- Added the toy data.
-- Added the chain_prompts.py
-- Added the general_utils.py
-- Added the rqg.py
-- Added the demo.ipynb.
-- Added the main.py (currently empty)
+- Added the `configs.py` file.
+- Added the `toy data`.
+- Added the `chain_prompts.py`
+- Added the `general_utils.py`
+- Added the `rag.py`
+- Added the `demo.ipynb`.
 - Tested the pipeline on the toy data and in the demo notebook.
 - Tested the functionality of the pipeline with "GPT-4" model.
 
