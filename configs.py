@@ -2,7 +2,7 @@
 # Description: High-level project configurations.
 ##########################################################################################
 
-from radqbllm.utils.general_utils import redirect_path
+from radqg.utils.general_utils import redirect_path
 from data.apis import POURIA_OPENAI_API_KEY
 
 # ----------------------------------------------------------------------------------------

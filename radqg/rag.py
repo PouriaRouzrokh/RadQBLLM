@@ -22,8 +22,8 @@ import sys
 sys.path.append("..")
 import configs
 from data.prompts.chain_prompts import create_prompt
-from radqbllm.utils.text_utils import get_all_chunks
-from radqbllm.utils.general_utils import talk
+from radqg.utils.text_utils import get_all_chunks
+from radqg.utils.general_utils import talk
 
 # ----------------------------------------------------------------------------------------
 # F: get_vector_db

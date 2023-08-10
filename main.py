@@ -9,8 +9,8 @@ import gradio as gr
 from langchain.embeddings.openai import OpenAIEmbeddings, Embeddings
 
 import configs
-from radqbllm.utils.text_utils import get_all_chunks
-from radqbllm.rag import (
+from radqg.utils.text_utils import get_all_chunks
+from radqg.rag import (
     get_vector_db,
     get_retriever,
     retrieval_qa,

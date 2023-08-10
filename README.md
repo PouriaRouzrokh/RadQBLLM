@@ -1,6 +1,6 @@
-# RadQBLLM
+# RadQG
 In this repository, we develop automated pipelines based on Large Language Models (LLMs) 
-for building radiology question banks. This README file currently contains 
+for building radiology question banks. This README file mostly contains 
 logs of the development process. When the code is ready for public use, this README file
 will be updated with instructions on how to use the code.
 
