@@ -28,4 +28,4 @@ will be updated with instructions on how to use the code.
 
 - Created the repository.
 - Cleaned and added the code for the text preprocessing.
-- Added the requirement.txt baseline file. 
+- Added the `requirement.txt` baseline file. 
