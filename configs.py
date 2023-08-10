@@ -9,7 +9,7 @@ from data.apis import POURIA_OPENAI_API_KEY
 # API and token configs
 # ----------------------------------------------------------------------------------------
 
-OPENAI_API_KEY = POURIA_OPENAI_API_KEY
+OPENAI_API_KEY = POURIA_OPENAI_API_KEY # Enter your OpenAI API key here
 
 # ----------------------------------------------------------------------------------------
 # Logging configs
@@ -46,3 +46,12 @@ CHAIN_TYPE = "stuff"
 # MODEL = "gpt-3.5-turbo"
 # MODEL = "gpt-4-32k"
 MODEL = "gpt-4"
+
+# ----------------------------------------------------------------------------------------
+# GradIO arguments
+# ----------------------------------------------------------------------------------------
+
+GR_PORT_NUMBER = 1901
+GR_SERVER_NAME = "0.0.0.0"
+GR_PUBLIC_SHARE = True
+GR_CONCURRENCY_COUNT = 30

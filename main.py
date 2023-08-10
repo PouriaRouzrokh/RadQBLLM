@@ -2,11 +2,8 @@
 # Description: GUI app code based on GradIO demonstrating the pipeline.
 ##########################################################################################
 
-import os
-import time
-
 import gradio as gr
-from langchain.embeddings.openai import OpenAIEmbeddings, Embeddings
+from langchain.embeddings.openai import OpenAIEmbeddings
 
 import configs
 from radqg.utils.text_utils import get_all_chunks
@@ -120,7 +117,8 @@ def main():
 
     with gr.Blocks(css=css_style) as app:
         gr.Markdown(
-            "# Radiology Question Generator with Large Language Models", elem_id="title"
+            "# RadQG: Radiology Question Generator with Large Language Models", 
+            elem_id="title"
         )
         gr.HTML("Pouria Rouzrokh MD MPH MHPE<sup>1,2★</sup>", elem_id="authors_list")
         gr.HTML(
@@ -176,6 +174,7 @@ def main():
                     label="OpenAI API Key",
                     value=configs.OPENAI_API_KEY,
                     interactive=True,
+                    type="password",
                     elem_id="normal",
                 )
             with gr.Row():
@@ -288,18 +287,18 @@ def main():
         pass
 
     app.queue(
-        concurrency_count=30,
+        concurrency_count=configs.GR_CONCURRENCY_COUNT,
         status_update_rate="auto",
     )
 
     out = app.launch(
         # max_threads=4,
-        share=True,
+        share=configs.GR_PUBLIC_SHARE,
         inline=False,
         show_api=False,
         show_error=True,
-        server_port=1901,
-        server_name="0.0.0.0",
+        server_port=configs.GR_PORT_NUMBER,
+        server_name=configs.GR_SERVER_NAME,
     )
 
     return out
