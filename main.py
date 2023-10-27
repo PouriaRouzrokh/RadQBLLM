@@ -300,7 +300,6 @@ def main():
         server_port=configs.GR_PORT_NUMBER,
         server_name=configs.GR_SERVER_NAME,
     )
-
     return out
 
 
