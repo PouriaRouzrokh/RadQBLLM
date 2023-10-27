@@ -48,3 +48,69 @@ def retrieve_figures(root_directory):
                                 ]
 
     return figures_dict
+
+
+def retrieve_fulltexts(root_directory):
+    articles_dict = {}
+
+    # Traverse the root directory to get all HTML files
+    for root, dirs, files in os.walk(root_directory):
+        for file in files:
+            if file.endswith(".html"):
+                file_path = os.path.join(root, file)
+
+                # Open and parse the HTML file
+                with open(file_path, "r", encoding="utf-8") as html_file:
+                    soup = BeautifulSoup(html_file, "html.parser")
+
+                    # Extract title
+                    title_tag = soup.find("h1", class_="citation__title")
+                    title_text = title_tag.get_text() if title_tag else ""
+
+                    # Extract main article content
+                    article_tag = soup.find("article")
+                    texts = []
+                    if article_tag:
+                        for p_tag in article_tag.find_all("p"):
+                            # Exclude text within figure and figcaption tags
+                            if p_tag.find_parent("figure") or p_tag.find_parent(
+                                "figcaption"
+                            ):
+                                continue
+                            texts.append(p_tag.get_text())
+
+                    # Concatenate, and replace multiple spaces with a single space
+                    full_text = title_text + " " + " ".join(texts)
+                    full_text = re.sub(
+                        " +", " ", full_text
+                    )  # Replace multiple spaces with a single space
+
+                    # Save the cleaned text in the dictionary
+                    articles_dict[file_path] = full_text
+
+    return articles_dict
+
+
+def inspect_tags(html_filepath):
+    with open(html_filepath, "r", encoding="utf-8") as html_file:
+        soup = BeautifulSoup(html_file, "html.parser")
+
+        # Finding and printing unique tags and their attributes
+        tags_info = {}
+        for tag in soup.find_all(True):
+            tag_name = tag.name
+            attrs = tag.attrs
+
+            # Only save the attributes of the first occurrence of each tag
+            if tag_name not in tags_info:
+                tags_info[tag_name] = attrs
+
+        # Printing the extracted tag information
+        for tag_name, attributes in tags_info.items():
+            print(f"Tag: {tag_name} Attributes: {attributes}")
+
+
+# Uncomment the following lines to test the functions
+# inspect_tags('/research/projects/m221279_Pouria/RadQG/data/html_articles/Internal Hernias in the Era of Multidetector CT_ Correlation of Imaging and Surgical Findings _ RadioGraphics.html')
+# full_text_dict = retrieve_fulltexts('/research/projects/m221279_Pouria/RadQG/data/html_articles')
+# print(list(full_text_dict.items())[1][-1])
