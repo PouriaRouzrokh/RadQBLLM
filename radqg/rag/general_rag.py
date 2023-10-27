@@ -18,7 +18,7 @@ from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import LLMChainExtractor, LLMChainFilter
 
 import radqg.settings.configs as configs
-from data.chain_prompts import create_prompt
+from radqg.data.chain_prompts import create_prompt
 from radqg.utils.text_utils import get_all_chunks
 from radqg.utils.general_utils import talk
 

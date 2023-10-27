@@ -1,0 +1,6 @@
+
+(function(){const downloadCountInputsAjax=document.querySelectorAll('.download-count-container');async function downloadCount(index){const container=document.querySelectorAll('.download-count-container');if(container[index].innerHTML===''){const dataSource=container[index].getAttribute('data-source');let response=await fetch(dataSource);let data=await response.text();return data}}
+if(downloadCountInputsAjax.length>0){downloadCountInputsAjax.forEach((input,index)=>{downloadCount(index).then(result=>{const json=JSON.parse(result);let data=json.data;let widgetProperties=json.thisWidget.properties;if(data){if(data.count>widgetProperties.minimumDownloads){input.insertAdjacentHTML('afterbegin',data.downloadFormat);}
+if(data.displayPeriod){input.insertAdjacentHTML("beforeend","&nbsp;")
+input.insertAdjacentHTML('beforeend',data.downloadMessage);}}})});}})();
+
