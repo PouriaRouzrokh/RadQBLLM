@@ -17,11 +17,8 @@ from langchain.vectorstores import Chroma, VectorStore, DocArrayInMemorySearch
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain.retrievers.document_compressors import LLMChainExtractor, LLMChainFilter
 
-import sys
-
-sys.path.append("..")
-import configs
-from data.prompts.chain_prompts import create_prompt
+import radqg.settings.configs as configs
+from data.chain_prompts import create_prompt
 from radqg.utils.text_utils import get_all_chunks
 from radqg.utils.general_utils import talk
 

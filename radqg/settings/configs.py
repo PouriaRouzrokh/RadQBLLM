@@ -3,13 +3,13 @@
 ##########################################################################################
 
 from radqg.utils.general_utils import redirect_path
-from data.apis import POURIA_OPENAI_API_KEY
+from radqg.settings.apis import POURIA_OPENAI_API_KEY
 
 # ----------------------------------------------------------------------------------------
 # API and token configs
 # ----------------------------------------------------------------------------------------
 
-OPENAI_API_KEY = POURIA_OPENAI_API_KEY # Enter your OpenAI API key here
+OPENAI_API_KEY = POURIA_OPENAI_API_KEY  # Enter your OpenAI API key here
 
 # ----------------------------------------------------------------------------------------
 # Logging configs
@@ -21,7 +21,7 @@ VERBOSE = True
 # Path configs
 # ----------------------------------------------------------------------------------------
 
-TOY_DATA_DIR = redirect_path("data/toy_data")
+TOY_DATA_DIR = redirect_path("data/brain_tumor_articles")
 VECTOR_DB_DIR = redirect_path("data/vector_db")
 
 # ----------------------------------------------------------------------------------------

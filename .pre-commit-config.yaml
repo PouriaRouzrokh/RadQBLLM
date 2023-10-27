@@ -1,0 +1,30 @@
+##########################################################################################
+# Description: Hooks for pre-commit.
+##########################################################################################
+
+repos:
+
+  # black
+  - repo: https://github.com/ambv/black
+    rev: 23.7.0
+    hooks:
+      - id: black
+        files: '\.py$'
+
+  # black-nb
+  - repo: local
+    hooks: 
+    - id: black-nb
+      name: black-nb
+      entry: black-nb
+      language: python
+      files: '\.ipynb$'
+
+  # Pylint
+  # - repo: https://github.com/pycqa/pylint
+  #   rev: v2.17.5
+  #   hooks:
+  #   -   id: pylint
+  #       args:
+  #       - --max-line-length=90
+  #       files: '\.py$'

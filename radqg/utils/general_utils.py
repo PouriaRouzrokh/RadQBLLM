@@ -4,10 +4,7 @@
 
 import os
 import pathlib
-import sys
-
-sys.path.append("..")
-import configs
+import radqg.settings.configs as configs
 
 # ----------------------------------------------------------------------------------------
 # Logging utils

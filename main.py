@@ -5,9 +5,9 @@
 import gradio as gr
 from langchain.embeddings.openai import OpenAIEmbeddings
 
-import configs
+import radqg.settings.configs as configs
 from radqg.utils.text_utils import get_all_chunks
-from radqg.rag import (
+from radqg.rag.general_rag import (
     get_vector_db,
     get_retriever,
     retrieval_qa,
@@ -117,8 +117,8 @@ def main():
 
     with gr.Blocks(css=css_style) as app:
         gr.Markdown(
-            "# RadQG: Radiology Question Generator with Large Language Models", 
-            elem_id="title"
+            "# RadQG: Radiology Question Generator with Large Language Models",
+            elem_id="title",
         )
         gr.HTML("Pouria Rouzrokh MD MPH MHPE<sup>1,2★</sup>", elem_id="authors_list")
         gr.HTML(
