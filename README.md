@@ -34,7 +34,8 @@ see the `demo/demo.ipynb` file for an example.
 - Removed the `text_utils.py` file and merged its functionalities into the `general_utils.py` file.
 - Added example HTML files to the `html_article` folder.
 - Archived the previous version of RadQG GUI and demos in the `archived` folder.
-- The `main.py` file is now set up to run the new version of RadQG GUI application.
+- The `main.py` was renamed to `gradio_demo.py` and a `notebook_demo` was also added to both demonstrate the functionalities of the pipeline and to serve as a template for future development.
+- The `demos` folder was deleted as the demo files are now available in the root directory.
 
 ### 10/27/2023:
 
