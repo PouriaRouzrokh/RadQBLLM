@@ -24,6 +24,23 @@ see the `demo/demo.ipynb` file for an example.
 ## Development Logs
 
 ```python
+
+### 10/28/2023:
+
+- Added functionalities for HTML parsing and extracting the text, figures, and figure captions from the HTML files.
+- Reorganized the repo to reflect the new version of RadQG which will be based on Q/A from RadioGraphics figures.
+- Added the `html_utils.py` file to the `utils` folder.
+- Merged all langchain utils into the `langchain_utils.py` file.
+- Removed the `text_utils.py` file and merged its functionalities into the `general_utils.py` file.
+- Added example HTML files to the `html_article` folder.
+- Archived the previous version of RadQG GUI and demos in the `archived` folder.
+- The `main.py` file is now set up to run the new version of RadQG GUI application.
+
+### 10/27/2023:
+
+- Set up pre-commit in the repo.
+- Added `balck` and `black-nb` to the pre-commit hooks.
+
 ### 08/10/2023:
 
 - Changed the name of the repository to "RadQG".
