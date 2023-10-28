@@ -24,7 +24,7 @@ def redirect_path(path, counter_limit=10):
     path = pathlib.Path(path)
     current_dir = pathlib.Path().absolute()
     counter = 0
-    while "main.py" not in os.listdir(current_dir):
+    while "README.md" not in os.listdir(current_dir):
         current_dir = current_dir.parent
         counter += 1
         if counter > counter_limit:

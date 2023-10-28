@@ -22,8 +22,6 @@ from langchain.vectorstores import Chroma, VectorStore, DocArrayInMemorySearch
 
 import radqg.settings.configs as configs
 from radqg.data.chain_prompts import create_prompt
-from radqg.utils.langchain_utils import get_all_chunks
-
 
 # ----------------------------------------------------------------------------------------
 # Chunking the text

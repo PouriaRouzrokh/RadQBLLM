@@ -21,8 +21,7 @@ VERBOSE = True
 # Path configs
 # ----------------------------------------------------------------------------------------
 
-TOY_DATA_DIR = redirect_path("data/pdf_articles")
-TOY_HTML_DATA_DIR = redirect_path("data/html_articles")
+TOY_DATA_DIR = redirect_path("data/html_articles")
 VECTOR_DB_DIR = redirect_path("data/vector_db")
 
 # ----------------------------------------------------------------------------------------
