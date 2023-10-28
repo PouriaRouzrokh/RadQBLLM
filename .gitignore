@@ -1,10 +1,13 @@
 # Local files
+*/temp
 temp.py 
 temp.ipynb
 apis.py
+archived
 
 # Byte-compiled / optimized / DLL files
-__pycache__/
+*/__pycache__
+__pycache__
 *.py[cod]
 *$py.class
 

@@ -4,26 +4,10 @@
 
 import os
 import pathlib
-import radqg.settings.configs as configs
+import tiktoken
 
 # ----------------------------------------------------------------------------------------
-# Logging utils
-# ----------------------------------------------------------------------------------------
-
-
-def talk(x):
-    """Prints the given message if the VERBOSE flag is set to True.
-
-    Args:
-        x (str): The message to be printed.
-    """
-    if configs.VERBOSE:
-        print(x)
-
-
-# ----------------------------------------------------------------------------------------
-# Path utils
-# ----------------------------------------------------------------------------------------
+# redirect_path
 
 
 def redirect_path(path, counter_limit=10):
@@ -49,3 +33,24 @@ def redirect_path(path, counter_limit=10):
             )
     new_path = current_dir / path
     return str(new_path)
+
+
+# ----------------------------------------------------------------------------------------
+# count_tokens
+
+
+def count_tokens(string: str, encoding_name: str = "gpt-3.5-turbo") -> int:
+    """Count the number of tokens in a string.
+
+    Args:
+        string (str): the string to count tokens in.
+        encoding_name (str, optional): Name of the LLM model. Defaults to "gpt-3.5-turbo".
+
+    Returns:
+        int: number of tokens in the string.
+    """
+
+    encoding = tiktoken.encoding_for_model(encoding_name)
+    num_tokens = len(encoding.encode(string))
+
+    return num_tokens

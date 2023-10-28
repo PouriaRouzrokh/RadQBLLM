@@ -12,7 +12,7 @@ A brief demo of our app is available below:
 
 ## Run
 
-- This repository is set up to mostly run with a GradIO application. Please rund the 
+- This repository is set up to mostly run with a GradIO application. Please run the 
 `main.py` file to run the pipeline. You can change the local port number
 
 - Feel free to change the parameters in the `configs.py` file according to your needs.
@@ -21,7 +21,7 @@ Don't forget to add your OpenAI API key to the `configs.py` file.
 - If you want to run the application in a notebook or command line environment, please
 see the `demo/demo.ipynb` file for an example.
 
-## Logs
+## Development Logs
 
 ```python
 ### 08/10/2023:
