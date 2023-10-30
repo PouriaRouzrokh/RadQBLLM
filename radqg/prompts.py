@@ -3,10 +3,10 @@
 ##########################################################################################
 
 # ----------------------------------------------------------------------------------------
-# get_qa_prompt
+# get_generator_prompt
 
 
-def get_qa_prompt(figure_caption: str, context: str, type_of_question: str) -> str:
+def get_generator_prompt(figure_caption: str, context: str, type_of_question: str) -> str:
     assert type_of_question in ["MCQ", "Fill_in_the_Blanks", "Open-Ended", "Anki"]
 
     question_instructions = {
@@ -70,10 +70,10 @@ def get_qa_prompt(figure_caption: str, context: str, type_of_question: str) -> s
 
 
 # ----------------------------------------------------------------------------------------
-# edit_qa_prompt
+# get_contenteditor_prompt
 
 
-def edit_qa_prompt(figure_caption: str, qa_dict_string: str) -> str:
+def get_contenteditor_prompt(figure_caption: str, qa_dict_string: str) -> str:
     prompt = f"""
     Read tge figure caption and the question-answer pair provided below and edit 
     the question to ensure it is not disclosing the diagnosis and imaging findings mentioned
@@ -142,10 +142,10 @@ def edit_qa_prompt(figure_caption: str, qa_dict_string: str) -> str:
 
 
 # ----------------------------------------------------------------------------------------
-# get_dict_formatting_prompt
+# get_formateditor_prompt
 
 
-def get_dict_formatting_prompt(qa_dict_string: str) -> str:
+def get_formateditor_prompt(qa_dict_string: str) -> str:
     prompt = f"""
     ---
     Read the provided input string below and modify it so that it can be converted into a Python dictionary with the eval() function.

@@ -4,7 +4,8 @@
 
 import openai
 import radqg.configs as configs
-from radqg.prompts import get_qa_prompt, edit_qa_prompt, get_dict_formatting_prompt
+from radqg.prompts import get_generator_prompt
+from radqg.prompts import get_contenteditor_prompt, get_formateditor_prompt
 
 # ----------------------------------------------------------------------------------------
 # Configurations
@@ -40,7 +41,7 @@ def qa(
     """A function to generate a question from a figure caption using the OpenAI LLMs."""
 
     # Asking for the initial question and answer generation
-    prompt1 = get_qa_prompt(
+    prompt1 = get_generator_prompt(
         figure_caption=caption,
         context=context,
         type_of_question=type_of_question,
@@ -49,7 +50,7 @@ def qa(
     while True:
         message1 = [{"role": "user", "content": prompt1}]
         response1 = openai.ChatCompletion.create(
-            model=configs.OPENAI_QA_GEN_MODEL,
+            model=configs.OPENAI_GENERATOR_MODEL,
             messages=message1,
             temperature=0.6,
             max_tokens=2000,
@@ -58,10 +59,10 @@ def qa(
         out_dict_string1 = response1.choices[0]["message"]["content"]
 
         # Asking for double-checking the question and answer generation
-        prompt2 = edit_qa_prompt(caption, out_dict_string1)
+        prompt2 = get_contenteditor_prompt(caption, out_dict_string1)
         message2 = [{"role": "user", "content": prompt2}]
         response2 = openai.ChatCompletion.create(
-            model=configs.OPENAI_QA_EDIT_MODEL,
+            model=configs.OPENAI_CONTENT_EDITOR_MODEL,
             messages=message2,
             temperature=0.6,
             max_tokens=2000,
@@ -73,10 +74,10 @@ def qa(
         out_dict_string3 = out_dict_string2
         count_revised = 0
         while count_revised < 5:
-            prompt3 = get_dict_formatting_prompt(out_dict_string3)
+            prompt3 = get_formateditor_prompt(out_dict_string3)
             message3 = [{"role": "user", "content": prompt3}]
             response3 = openai.ChatCompletion.create(
-                model=configs.OPENAI_FORMATTING_MODEL,
+                model=configs.OPENAI_FORMAT_EDITOR_MODEL,
                 messages=message3,
                 temperature=0.2,
                 max_tokens=2000,
