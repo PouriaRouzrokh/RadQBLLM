@@ -91,6 +91,7 @@ def qa(
                 break
             except:
                 print("The following string is not a valid Python dictionary:")
+                print(out_dict_string3)
                 continue
         if good_question_created:
-            return qa_dict
+            return qa_dict, out_dict_string1, out_dict_string2, out_dict_string3

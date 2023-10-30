@@ -200,7 +200,7 @@ class Generator:
         article_name: str,
         caption: str,
         type_of_question: str,
-        return_context: bool = False,
+        complete_return: bool = False,
     ) -> Union[dict, tuple[dict, str]]:
         """A method to generate a question-answer pair from a given figure caption."""
 
@@ -222,7 +222,8 @@ class Generator:
         context = "..." + "...".join(chunks) + "..."
 
         # Generating the question and answer
-        qa_dict = qa_fn(caption, context, type_of_question)
-        if return_context:
-            return qa_dict, context
+        qa_dict, llm1_response, llm2_response, llm3_response = qa_fn(
+            caption, context, type_of_question)
+        if complete_return:
+            return qa_dict, llm1_response, llm2_response, llm3_response, context
         return qa_dict

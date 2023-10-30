@@ -62,10 +62,10 @@ def retrieve_figures(root_directory: str) -> list[dict]:
 
 
 # ----------------------------------------------------------------------------------------
-# retrieve_fulltexts
+# retrieve_articles
 
 
-def retrieve_fulltexts(root_directory: str) -> list[dict]:
+def retrieve_articles(root_directory: str) -> list[dict]:
     """A function to retrieve full texts from a given directory of saved RadioGraphics
     articles in the format of HTML files."""
 

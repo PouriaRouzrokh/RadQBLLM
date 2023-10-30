@@ -12,9 +12,10 @@ def get_qa_prompt(figure_caption: str, context: str, type_of_question: str) -> s
     question_instructions = {
         "MCQ": """
         - Craft a question that is clear, concise, and directly related to the figure provided.\n
-        - Provide five answer options, labeling them as A, B, C, D, and E. Ensure that only one of these is the correct answer.\n
-        - Include all components of the question (stem and options) under the "question" key in the output dictionary.
-        - Avoid using 'All of the above' or 'None of the above' as answer options to maintain the question's educational effectiveness.
+        - Provide five options, labeling them as A, B, C, D, and E. Ensure that only one of these is the correct answer.\n
+        - Include all five options under in the question output dictionary under the "question" key.\n
+        - Avoid using 'All of the above' or 'None of the above' among the options.
+        - Provide a detailed answer to the question in the "answer" key of the question output dictionary.
         """,
         "Fill_in_the_Blanks": """ 
         - Formulate a question or statement that has one or more blanks for the trainee to complete.
@@ -23,12 +24,12 @@ def get_qa_prompt(figure_caption: str, context: str, type_of_question: str) -> s
         """,
         "Open-Ended": """ 
         - Design a question that encourages a detailed response, analysis, or explanation from the trainee.
-        - Ensure the question is open to thoughtful interpretation and analysis, promoting critical thinking.
-        - Make sure the question is structured in a way that the answer can be derived through a detailed examination of the figure and context.
+        - Provide a detailed answer to the question in the "answer" key of the question output dictionary.
         """,
         "Anki": """ 
         - Create a question suitable for a flashcard, focusing on memorization and recall.
         - The question should be concise, focusing on a single fact or concept that is evident from the figure and context.
+        - The answer should be a single word or phrase that is directly related to the question.
         - Ensure the answer to the question is brief and directly related to the question, facilitating easy memorization and recall for the trainee.
         """,
     }
@@ -50,15 +51,18 @@ def get_qa_prompt(figure_caption: str, context: str, type_of_question: str) -> s
 
     Based on the figure caption and the context provided:
 
-    - Develop a very difficult question that is directly related to the visual content in the figure.
-    - If there is any diagnosis or imaging findings mentioned in the figure caption, ensure that you do not disclose it in the question.
-    - The question may draw upon details from the context to enhance its educational value, but it must remain grounded in the figure.
+    - Develop a very difficult clinical scenario question that is directly related to the visual content in the figure.
+    - Do not mention more than one clinical scenario in the stem of question.
+    - You must not disclose any diagnosis and imaging findings that are mentioned in the figure caption within the question.
+    - Do not try describing the imaging findings that are mentioned in the figure caption within the question.
+    - You can also ask about the information provided in the context, but the question should still need the user to figure out the diagnosis or some imaging findings from the figure.
+    - If the question type is MCQ, do not forget to include the five options in the question.
     - Ensure the question aligns with the specified type and follows the instructions and guidelines given for that type.
-    - The output should be a Python dictionary formatted as follows:
-    {{'question': 'Your question here', 'answer': 'The answer here'}}
+    - If the question type is not Anki, provide a very detailed answer to the question in the "answer" key of the question output dictionary.
     
     
-    Your output:
+    Your output in the format:
+    {{'question': 'Your question here (including the choices if MCQ question)', 'answer': 'The answer here'}}
     
     """
 
@@ -72,8 +76,9 @@ def get_qa_prompt(figure_caption: str, context: str, type_of_question: str) -> s
 def edit_qa_prompt(figure_caption: str, qa_dict_string: str) -> str:
     prompt = f"""
     Read tge figure caption and the question-answer pair provided below and edit 
-    the question to ensure it is not disclosing the diagnosis or imaging findings mentioned
-    in the figure caption. 
+    the question to ensure it is not disclosing the diagnosis and imaging findings mentioned
+    in the figure caption. If the original question is describing some imaging findings,
+    remove them.
     
     --- Input ---
     
@@ -88,10 +93,12 @@ def edit_qa_prompt(figure_caption: str, qa_dict_string: str) -> str:
     
     - Do not change the answer and only edit the question.
     
+    - If the question is a MCQ and the input has an "options" key, include all five options in the end of the "question" key.
+    
     - The output should be a Python dictionary formatted as follows:
     {{'question': 'Your modified question here', 'answer': 'The answer here'}}
     
-    --- Example ---
+    --- Example 1 ---
     
     **Input:**
     
@@ -99,13 +106,31 @@ def edit_qa_prompt(figure_caption: str, qa_dict_string: str) -> str:
     "Figure 18b.Surgically-confirmed foreign body perforation in two patients.(a)Axial nonenhanced CT image in a 16-year-old girl who ingested a small bone shows a linear density in a loop of small bowel in the mid-left abdomen (arrow), extending through the bowel wall, with perforation that was later confirmed at surgery.(b)Axial intravenous contrast-enhanced CT image in a 78-year-old woman with right-sided abdominal pain shows a thin bone (arrow) causing focal small-bowel perforation, with associated mural edema, mesenteric fat stranding, and ascites."
     
     - Generated QA:
-    'Question': 'A 16-year-old girl presents to the emergency department with severe left-sided abdominal pain. A non-enhanced CT scan of the abdomen reveals a linear density in a loop of small bowel in the mid-left abdomen. Based on the imaging findings, which of the following is the most likely diagnosis? A) Small bowel obstruction B) Foreign body perforation C) Acute mesenteric ischemia D) Inflammatory bowel disease E) Small bowel ischemia' 
-    'Answer': 'B) Foreign body perforation. The CT scan findings of a linear density in a loop of small bowel extending through the bowel wall are consistent with a foreign body perforation. The history of the patient having eaten a chicken meal earlier in the day supports the possibility that a small bone might have been ingested and caused the perforation.'
+    "question": "A 16-year-old girl presents to the emergency department with severe left-sided abdominal pain. A non-enhanced CT scan of the abdomen reveals a linear density in a loop of small bowel in the mid-left abdomen. Based on the imaging findings, which of the following is the most likely diagnosis? A) Small bowel obstruction B) Foreign body perforation C) Acute mesenteric ischemia D) Inflammatory bowel disease E) Small bowel ischemia"
+    "answer": "B) Foreign body perforation. The CT scan findings of a linear density in a loop of small bowel extending through the bowel wall are consistent with a foreign body perforation. The history of the patient having eaten a chicken meal earlier in the day supports the possibility that a small bone might have been ingested and caused the perforation."
     
     **Exected Output:**
     
-    'Question': 'A 16-year-old girl presents to the emergency department with severe left-sided abdominal pain. A non-enhanced CT scan of the abdomen is provided. Based on the imaging findings, which of the following is the most likely diagnosis? A) Small bowel obstruction B) Foreign body perforation C) Acute mesenteric ischemia D) Inflammatory bowel disease E) Small bowel ischemia' 
-    'Answer': 'B) Foreign body perforation. The CT scan findings of a linear density in a loop of small bowel extending through the bowel wall are consistent with a foreign body perforation. The history of the patient having eaten a chicken meal earlier in the day supports the possibility that a small bone might have been ingested and caused the perforation.'
+    "question": "A 16-year-old girl presents to the emergency department with severe left-sided abdominal pain. A non-enhanced CT scan of the abdomen is provided. Based on the imaging findings, which of the following is the most likely diagnosis? A) Small bowel obstruction B) Foreign body perforation C) Acute mesenteric ischemia D) Inflammatory bowel disease E) Small bowel ischemia" 
+    "answer": "B) Foreign body perforation. The CT scan findings of a linear density in a loop of small bowel extending through the bowel wall are consistent with a foreign body perforation. The history of the patient having eaten a chicken meal earlier in the day supports the possibility that a small bone might have been ingested and caused the perforation."
+    
+    
+    --- Example 2 ---
+    
+    **Input:**
+    
+    - Figure Caption: 
+    "Figure 4b.Acute mesenteric venous ischemia in a 43-year-old woman with positive test results for lupus anticoagulant who presented with acute abdominal pain. Axial(a)and coronal(b)intravenous contrast-enhanced CT images show an occlusive thrombus within the superior mesenteric vein (white arrow) and its jejunal branches, with several loops of thick-walled jejunum (arrowheads) that show marked mural edema and a target appearance of the bowel, which is poorly enhancing. Note the mesenteric edema and fluid (black arrow inb), common features of mesenteric venous ischemia."
+    
+    - Generated QA:
+    "question": "A 43-year-old woman with a positive test for lupus anticoagulant presents with acute abdominal pain. The figure provided shows CT images with several loops of thick-walled jejunum and mesenteric edema. What could be a possible cause for her condition based on the imaging findings?", 
+    "answer": "Acute mesenteric venous ischemia."
+    
+    **Exected Output:**
+    
+    "question': "A 43-year-old woman with a positive test for lupus anticoagulant presents with acute abdominal pain. The figure provided shows CT images for the patient. What could be a possible cause for her condition?",
+    "answer": "Acute mesenteric venous ischemia."
+   
     
     --- End of Example ---
     
@@ -123,27 +148,26 @@ def edit_qa_prompt(figure_caption: str, qa_dict_string: str) -> str:
 def get_dict_formatting_prompt(qa_dict_string: str) -> str:
     prompt = f"""
     ---
-    You will receive a string as input and should if it can be converted into a Python dictionary with the eval() function.
-    If not, you should modify the string so that it can be converted into a dictionary.
+    Read the provided input string below and modify it so that it can be converted into a Python dictionary with the eval() function.
     The output dictionary must contain at least two keys: 'question' and 'answer'.
+    
+    Input String: "{qa_dict_string}"
 
-    instructions:
+    --- Further instructions ---
         1. Examine the input string to ensure that it is formatted correctly to be interpreted as a dictionary by the eval() function.
         2. Ensure that the resulting dictionary contains the necessary keys: 'question' and 'answer'.
         3. Make sure that the ' and " characters are matched correctly.
         4. If there is any ' or " in the string except for the ones that are used to enclose the keys and values, replace them with `.
         5. If the input string is not correctly formatted or lacks the necessary keys, correct the format and/or include the missing elements.
-        6. The output should be a string that, when passed to the eval() function, results in a valid dictionary with the necessary keys.
+        6. The output should be a Python dictionary with "question" and "answer" keys.
 
-    example:
+    --- Example ---
         input: "{{'question': 'What is radiologists' job?', 'answer: 'Reading medical images'}}"
-        output: "{{'question': 'What is radiologists` job?', 'answer': 'Reading medical images'}}"
+        output: {{'question': 'What is radiologists` job?', 'answer': 'Reading medical images'}}
     ---
 
-    Input String: "{qa_dict_string}"
-
     Output:
-    "Your reformatted string here"
+    "Your reformatted dictionary here"
     """
 
     return prompt

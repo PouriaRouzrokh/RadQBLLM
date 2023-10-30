@@ -38,8 +38,8 @@ OPENAI_FORMATTING_MODEL = "gpt-3.5-turbo"
 # ----------------------------------------------------------------------------------------
 
 NUM_RETRIEVED_CHUNKS = 3
-CHUNK_SIZE = 4000
-CHUNK_OVERLAP = 1000
+CHUNK_SIZE = 1500
+CHUNK_OVERLAP = 500
 
 # ----------------------------------------------------------------------------------------
 # GradIO arguments
