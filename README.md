@@ -8,13 +8,13 @@ and run the app for generating radiology questions.
 
 A brief demo of our app is available below:
 
-<img src="data/temp_demo.gif" alt="demo" style="border: 0px solid black;">
+<img src="data/readme_image.gif" alt="demo" style="border: 0px solid black;">
 
 ## How to Run
 
 > This repository is set up to mostly run with a GradIO application. Please run the 
-`app.py` file to run the GUI. You can change the local port number, if needed. Alternatively, you can
-run the `demo.ipynb` file to run the pipeline in a notebook environment.
+`demo/gradio_demo.py` file to run the GUI. You can change the local port number, if needed. Alternatively, you can
+run the `demo/notebook_demo.ipynb` file to run the pipeline in a notebook environment.
 
 - Please start by installing the required packages in the `requirements.txt` file.
 
@@ -22,9 +22,9 @@ run the `demo.ipynb` file to run the pipeline in a notebook environment.
 
 - Feel free to change the other parameters in the `configs.py` file according to your needs.
 
-- If running the `demo.ipynb` file, please make sure to upload your RadioGraphics HTML files in the `data/html_articles` folder.
+- If running the `demo/notebook_demo.ipynb` file, please make sure to upload your RadioGraphics HTML files in the `data/html_articles` folder.
 
-- Refer to the `demo.ipynb` file or the GradIO app for further instructions.
+- Refer to the `demo/notebook_demo.ipynb` file or the `demo/gradio_demo.py` for further instructions.
 
 ## Development Logs
 
@@ -36,7 +36,7 @@ run the `demo.ipynb` file to run the pipeline in a notebook environment.
 - Added the `utils.py` file to include the utility functions.
 - Added the `prompts.py` file to include the prompt templates for LLMs.
 - Added he `llm/openai.py` file to include the functionalities for loading the LLMs using the OpenAI API.
-- Added the `demo.ipynb` file to include the demo of the pipeline in a notebook environment.
+- Added the `demo/notebook_demo.ipynb` file to include the demo of the pipeline in a notebook environment.
 
 ### 10/28/2023:
 
