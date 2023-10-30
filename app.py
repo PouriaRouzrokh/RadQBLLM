@@ -18,6 +18,9 @@ from radqg.utils.langchain_utils import (
 # Helper Functions
 # ----------------------------------------------------------------------------------------
 
+# ----------------------------------------------------------------------------------------
+# upload_file
+
 
 def upload_file(files):
     global chain
@@ -28,6 +31,10 @@ def upload_file(files):
     return file_paths, gr.Textbox.update(
         value=f"{len(file_paths)} files were uploaded."
     )
+
+
+# ----------------------------------------------------------------------------------------
+# initialize_app
 
 
 def initialize_app(openai_api_key, chnuk_size, chunk_overlap, k):
@@ -54,6 +61,10 @@ def initialize_app(openai_api_key, chnuk_size, chunk_overlap, k):
         contextual_compressor=configs.COMPRESSOR,
     )
     return gr.Textbox.update("The app is initialized.")
+
+
+# ----------------------------------------------------------------------------------------
+# generate_question
 
 
 def generate_question(
@@ -86,6 +97,9 @@ def generate_question(
 # ----------------------------------------------------------------------------------------
 # GradIO App
 # ----------------------------------------------------------------------------------------
+
+# ----------------------------------------------------------------------------------------
+# run_gui
 
 
 def run_gui():
@@ -301,3 +315,10 @@ def run_gui():
         server_name=configs.GR_SERVER_NAME,
     )
     return out
+
+
+# ----------------------------------------------------------------------------------------
+# main
+
+if __name__ == "__main__":
+    _ = run_gui()
