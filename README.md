@@ -1,8 +1,8 @@
 # RadQG
-RadQG is a small personal application to automatically generate radiology questions based
-on retrieval augmentation of some user-input radiology texts. 
-This repository contains the functionalities to load the Large Language Models (LLMs) 
-and run the app for generating radiology questions. 
+RadQG is an artificial intelligence (AI)-based tool to automatically generate radiology questions based
+on the available figures within some user-input articles from the [RadioGraphics](https://pubs.rsna.org/journal/radiographics) journal. 
+RadQG works with large language models (LLMs) and this repository contains the functionalities to utilize those models for generating 
+questions and developing a question bank.
 
 <p> Developer: Pouria Rouzrokh, MD, MPH, MHPE [rouzrokh.pouria@mayo.edu]
 
