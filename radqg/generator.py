@@ -223,7 +223,8 @@ class Generator:
 
         # Generating the question and answer
         qa_dict, llm1_response, llm2_response, llm3_response = qa_fn(
-            caption, context, type_of_question)
+            caption, context, type_of_question
+        )
         if complete_return:
             return qa_dict, llm1_response, llm2_response, llm3_response, context
         return qa_dict
