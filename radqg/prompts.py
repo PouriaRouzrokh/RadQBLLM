@@ -6,7 +6,9 @@
 # get_generator_prompt
 
 
-def get_generator_prompt(figure_caption: str, context: str, type_of_question: str) -> str:
+def get_generator_prompt(
+    figure_caption: str, context: str, type_of_question: str
+) -> str:
     assert type_of_question in ["MCQ", "Fill_in_the_Blanks", "Open-Ended", "Anki"]
 
     question_instructions = {

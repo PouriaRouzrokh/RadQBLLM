@@ -30,6 +30,11 @@ run the `demo/notebook_demo.ipynb` file to run the pipeline in a notebook enviro
 
 ```python
 
+### 10/30/2023:
+
+- Changed the name of the prompting models for clarity.
+- Changed the name of the OpenAI models for clarity.
+
 ### 10/29/2023:
 
 - Added the `generate.py` file to include the functionalities for generating the questions.
