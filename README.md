@@ -8,34 +8,42 @@ and run the app for generating radiology questions.
 
 A brief demo of our app is available below:
 
-<img src="demos/demo.gif" alt="demo" style="border: 1px solid black;">
+<img src="data/temp_demo.gif" alt="demo" style="border: 0px solid black;">
 
-## Run
+## How to Run
 
-- This repository is set up to mostly run with a GradIO application. Please run the 
-`main.py` file to run the pipeline. You can change the local port number
+> This repository is set up to mostly run with a GradIO application. Please run the 
+`app.py` file to run the GUI. You can change the local port number, if needed. Alternatively, you can
+run the `demo.ipynb` file to run the pipeline in a notebook environment.
 
-- Feel free to change the parameters in the `configs.py` file according to your needs.
-Don't forget to add your OpenAI API key to the `configs.py` file.
+- Please start by installing the required packages in the `requirements.txt` file.
 
-- If you want to run the application in a notebook or command line environment, please
-see the `demo/demo.ipynb` file for an example.
+- Enter your OpenAI API key in the `configs.py` file. 
+
+- Feel free to change the other parameters in the `configs.py` file according to your needs.
+
+- If running the `demo.ipynb` file, please make sure to upload your RadioGraphics HTML files in the `data/html_articles` folder.
+
+- Refer to the `demo.ipynb` file or the GradIO app for further instructions.
 
 ## Development Logs
 
 ```python
 
+### 10/29/2023:
+
+- Added the `generate.py` file to include the functionalities for generating the questions.
+- Added the `utils.py` file to include the utility functions.
+- Added the `prompts.py` file to include the prompt templates for LLMs.
+- Added he `llm/openai.py` file to include the functionalities for loading the LLMs using the OpenAI API.
+- Added the `demo.ipynb` file to include the demo of the pipeline in a notebook environment.
+
 ### 10/28/2023:
 
-- Added functionalities for HTML parsing and extracting the text, figures, and figure captions from the HTML files.
 - Reorganized the repo to reflect the new version of RadQG which will be based on Q/A from RadioGraphics figures.
-- Added the `html_utils.py` file to the `utils` folder.
-- Merged all langchain utils into the `langchain_utils.py` file.
-- Removed the `text_utils.py` file and merged its functionalities into the `general_utils.py` file.
-- Added example HTML files to the `html_article` folder.
-- Archived the previous version of RadQG GUI and demos in the `archived` folder.
-- The `main.py` was renamed to `gradio_demo.py` and a `notebook_demo` was also added to both demonstrate the functionalities of the pipeline and to serve as a template for future development.
-- The `demos` folder was deleted as the demo files are now available in the root directory.
+- Added the `parse_html.py` file to include functionalities for HTML parsing and extracting the text, figures, and figure captions from the HTML files.
+- Archived the old version of RadQG in the `archive` folder.
+- Removed the `demo` folder.
 
 ### 10/27/2023:
 
