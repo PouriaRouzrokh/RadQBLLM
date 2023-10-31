@@ -28,6 +28,9 @@ class Generator:
         chunk_size: int = configs.CHUNK_SIZE,
         chunk_overlap: int = configs.CHUNK_OVERLAP,
         collection_name: str = None,
+        generator_model: str = configs.OPENAI_GENERATOR_MODEL,
+        content_editor_model: str = configs.OPENAI_CONTENT_EDITOR_MODEL,
+        format_editor_model: str = configs.OPENAI_FORMAT_EDITOR_MODEL,
     ):
         """The constructor of the Generator class."""
 
@@ -38,6 +41,9 @@ class Generator:
         self.collection_name = collection_name
         self.generator_memory = dict()
         self.collection = self.create_collection()
+        self.generator_model = generator_model
+        self.content_editor_model = content_editor_model
+        self.format_editor_model = format_editor_model
 
     def create_collection(self) -> chromadb.Collection:
         """A method to create a collection of articles and figures from a given
@@ -222,9 +228,9 @@ class Generator:
         context = "..." + "...".join(chunks) + "..."
 
         # Generating the question and answer
-        qa_dict, llm1_response, llm2_response, llm3_response = qa_fn(
-            caption, context, type_of_question
+        qa_dict, llm1_response, llm2_response, llm3_response, total_tokens, total_price = qa_fn(
+            caption, context, type_of_question, self.generator_model, self.content_editor_model, self.format_editor_model
         )
         if complete_return:
-            return qa_dict, llm1_response, llm2_response, llm3_response, context
+            return qa_dict, llm1_response, llm2_response, llm3_response, context, total_tokens, total_price
         return qa_dict
