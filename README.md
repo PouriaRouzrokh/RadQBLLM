@@ -30,6 +30,10 @@ run the `demo/notebook_demo.ipynb` file to run the pipeline in a notebook enviro
 
 ```python
 
+### 10/31/2023:
+
+- Added the "option" key for the dictionary returned from LLMs for the MCQs.
+
 ### 10/30/2023:
 
 - Changed the name of the prompting models for clarity.
