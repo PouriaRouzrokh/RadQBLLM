@@ -3,123 +3,134 @@
 ##########################################################################################
 
 import os
+import random
+import re
 import sys
 
 sys.path.append("../")
+
 import gradio as gr
+import openai
 import radqg.configs as configs
 from radqg.generator import Generator
 from radqg.llm.openai import embed_fn as openai_embed_fn
 from radqg.llm.openai import qa as openai_qa
+from radqg.parse_html import retrieve_figures, retrieve_articles
 
 # ----------------------------------------------------------------------------------------
 # Helper Functions
 # ----------------------------------------------------------------------------------------
 
 # ----------------------------------------------------------------------------------------
+# load_articles
+
+
+def load_articles():
+    
+    global all_article_full_names
+    
+    all_article_short_names = []
+    all_article_full_names = []
+    for file in os.listdir(configs.TOY_DATA_DIR):
+        if file.endswith(".html"):
+            file_name = file.split(" _ RadioGraphics.html")[0]
+            all_article_short_names.append(file_name)
+            all_article_full_names.append(file)
+    return all_article_short_names, all_article_full_names
+
+
+# ----------------------------------------------------------------------------------------
 # initialize_app
 
 
-def initialize_app(openai_api_key, chnuk_size, chunk_overlap, k):
-    global chain
-    global retriever
-
-    docs = get_all_chunks(
-        file_paths, chunk_size=int(chnuk_size), chunk_overlap=int(chunk_overlap)
-    )
-    embedding_llm = OpenAIEmbeddings(
-        model=configs.EMBEDDING_MODEL, openai_api_key=openai_api_key
-    )
-    vector_db = get_vector_db(
-        docs,
-        db_name=configs.VECTOR_DB,
-        load_from_existing=False,
-        embeddings=embedding_llm,
-    )
-    retriever = get_retriever(
-        vector_db,
-        search_type=configs.SEARCH_TYPE,
-        k=int(k),
-        fetch_k=configs.FETCH_K,
-        contextual_compressor=configs.COMPRESSOR,
-    )
-    return gr.Textbox.update("The app is initialized.")
-
+def get_api(openai_api_key):
+    
+    os.environ["OPENAI_API_KEY"] = openai_api_key
+    
+    try:
+        _ = openai.Completion.create(
+            engine="davinci",
+            prompt="This is a test.",
+            max_tokens=5
+        )
+    except:
+        return gr.Textbox("The OpenAI API is not valid. Please try again.")
+    else:
+        return gr.Textbox("The OpenAI API was saved and is working as expected. Please proceed to the \"Setup\" tab")
 
 # ----------------------------------------------------------------------------------------
 # initialize_qbank
 
 
-def initialize_qbank(openai_api_key, chnuk_size, chunk_overlap, k):
-    global chain
-    global retriever
+def initialize_qbank(topic, chnuk_size, chunk_overlap, num_retrieved_chunks, 
+                     generator_model, content_editor_model, format_editor_model, 
+                     *article_checkboxes):
 
-    docs = get_all_chunks(
-        file_paths, chunk_size=int(chnuk_size), chunk_overlap=int(chunk_overlap)
-    )
-    embedding_llm = OpenAIEmbeddings(
-        model=configs.EMBEDDING_MODEL, openai_api_key=openai_api_key
-    )
-    vector_db = get_vector_db(
-        docs,
-        db_name=configs.VECTOR_DB,
-        load_from_existing=False,
-        embeddings=embedding_llm,
-    )
-    retriever = get_retriever(
-        vector_db,
-        search_type=configs.SEARCH_TYPE,
-        k=int(k),
-        fetch_k=configs.FETCH_K,
-        contextual_compressor=configs.COMPRESSOR,
-    )
-    return gr.Textbox.update("The app is initialized.")
-
-
-# ----------------------------------------------------------------------------------------
-# load_articles
-
-
-def load_articles():
-    file_names = []
-    full_file_names = []
-    for file in os.listdir(configs.TOY_DATA_DIR):
-        if file.endswith(".html"):
-            file_name = file.split(" _ RadioGraphics.html")[0]
-            file_names.append(file_name)
-            full_file_names.append(file)
-    return file_names, full_file_names
+    global generator
+    global article_names
+    global figpaths
+    global captions
+    global sampler
+    
+    # Handling the article selection
+    selected_articles = []
+    for i, checkbox in enumerate(article_checkboxes):
+        if checkbox:
+            selected_articles.append(all_article_full_names[i])
+    
+    # Handling the topic
+    if topic == "N/A":
+        topic = None
+    
+    # Initializing the generator
+    generator = Generator(
+        data_dir=configs.TOY_DATA_DIR,
+        embed_fn=openai_embed_fn,
+        chunk_size=int(chnuk_size),
+        chunk_overlap=int(chunk_overlap),
+        num_retrieved_chunks=int(num_retrieved_chunks),
+        generator_model=generator_model,
+        content_editor_model=content_editor_model,
+        format_editor_model=format_editor_model,
+        selected_articles=selected_articles,
+    )  
+    
+    # Setting up the question bank
+    article_names, figpaths, captions, sampler = generator.setup_qbank(topic)
+    
+    return gr.Textbox(f"The question bank is set up with {len(selected_articles)} articles selected.")
 
 
 # ----------------------------------------------------------------------------------------
 # generate_question
 
 
-def generate_question(
-    model,
-    tempreture,
-    openai_api_key,
-    topic,
-    format,
-    level_of_difficulty,
-    other_characteristics,
-):
-    chain = retrieval_qa(
-        retriever,
-        model=model,
-        temperature=float(tempreture),
-        chain_type=configs.CHAIN_TYPE,
-        prompt_keywords={
-            "format": format,
-            "difficulty_level": level_of_difficulty,
-            "criteria": other_characteristics,
-        },
-        openai_api_key=openai_api_key,
+def generate_question(question_type: str):
+    
+    if question_type == "Anki":
+        question_type = random.choice(["MCQ", "Fill_in_the_Blanks"])
+
+    article_name, figpath, caption = generator.select_figure(
+        article_names, 
+        figpaths, 
+        captions, 
+        sampler, 
+        reset_memory=False
     )
+    
+    qa_dict, *_ = generator.generate_qa(
+        qa_fn=openai_qa,
+        article_name=article_name,
+        caption=caption,
+        type_of_question=question_type,
+        complete_return=True,
+    )
+    
+    question = qa_dict["question"]
+    if "options" in qa_dict.keys():
+        question += "\n\n" + re.sub(r'(, )?([B-E]\))', r'\n\2', qa_dict["options"])
 
-    result = chain({"query": topic})
-
-    return gr.Textbox.update(result["result"])
+    return [gr.Image(figpath), question, qa_dict["answer"]]
 
 
 # ----------------------------------------------------------------------------------------
@@ -197,7 +208,7 @@ def run_gui():
             with gr.Row():
                 gr.Markdown(
                     """ 
-                    To start, please enter your **OpenAI API key** and click on "Start the App!" button below.<sup>*</sup>.
+                    To start, please enter your **OpenAI API key** and click on "Save the API!" button below.<sup>*</sup>.
                     <br><sup>*</sup> If you do not have an OpenAI API key or do not know what it is, please visit [here](https://openai.com/blog/openai-api).
                     """
                 )
@@ -212,12 +223,72 @@ def run_gui():
                 )
 
             with gr.Row():
-                gr.Markdown(
-                    """ 
-                    Optionally, you can also configure the RadQG advanced settings before starting the app.
-                    """
+                api_button = gr.Button("Save the API!", elem_id="generate_button")
+
+            with gr.Row():
+                log_textbox1 = gr.Textbox(
+                    "No API is currently provided.",
+                    label="App Status",
                 )
 
+            # Events
+            api_button.click(
+                get_api,
+                [openai_api_key],
+                [log_textbox1],
+            )
+
+        with gr.TabItem("Setup"):
+            with gr.Row():
+                gr.Markdown(
+                    """ 
+                        Please select the articles that you want to use as the source for question generation and initialize the question bank.
+                        > **Note**: This app is a demo version of the RadQG and contains a limited number of articles from the RadioGraphics top 10 gastrointestinal list to choose from. 
+                        """
+                )
+
+            # article_checkboxes = gr.CheckboxGroup(
+            #     choices=load_articles()[0],
+            #     label="Articles:",
+            #     interactive=True,
+            #     container=False,
+            #     elem_id="articles",
+            # )
+
+            with gr.Row():
+                gr.Markdown("Articles:", elem_id="normal")
+            with gr.Group():
+                article_checkboxes = []
+                for article in load_articles()[0]:
+                    with gr.Row():
+                        checkbox = gr.Checkbox(
+                            label=article,
+                            value=True,
+                            interactive=True,
+                            elem_id="articles",
+                        )
+                        article_checkboxes.append(checkbox)
+                    
+            with gr.Row():
+                gr.Markdown(
+                    """ 
+                    **Optinal**: You can also provide a topic or keyword to see more questions related to that topic. If the topic is N/A (default), the app will generate random questions from the entire content of articles.
+                    """
+                )
+            with gr.Row():
+                topic = gr.Textbox(
+                    label="Topic of the question:", 
+                    value = "N/A",
+                    interactive=True, 
+                    elem_id="normal"
+                )
+            
+            with gr.Row():
+                gr.Markdown(
+                    """ 
+                    **Optinal**: You can also configure the RadQG advanced settings before initializing the question bank.
+                    """
+                )
             with gr.Row():
                 with gr.Accordion(
                     label="Advanced Settings", elem_id="accordion", open=False
@@ -263,86 +334,24 @@ def run_gui():
                             value=configs.NUM_RETRIEVED_CHUNKS,
                             interactive=True,
                             elem_id="normal",
-                        )
-            with gr.Row():
-                app_button = gr.Button("Start the App!", elem_id="generate_button")
-
-            with gr.Row():
-                log_textbox1 = gr.Textbox(
-                    "Currently, the app is not initialized.",
-                    label="App Status",
-                )
-
-            # Events
-            app_button.click(
-                initialize_app,
-                [openai_api_key, chnuk_size, chunk_overlap, num_retrieved_chunks],
-                [log_textbox1],
-            )
-
-        with gr.TabItem("Question Bank"):
-            with gr.Row():
-                gr.Markdown(
-                    """ 
-                        Please select the articles that you want to use as the source for question generation.
-                        > **Note**: This app is a demo version of the RadQG and contains a limited number of articles from the RadioGraphics top 10 gastrointestinal list to choose from. 
-                        """
-                )
-
-            # article_checkboxes = gr.CheckboxGroup(
-            #     choices=load_articles()[0],
-            #     label="Articles:",
-            #     interactive=True,
-            #     container=False,
-            #     elem_id="articles",
-            # )
-
-            with gr.Row():
-                gr.Markdown("Articles:", elem_id="normal")
-            with gr.Group():
-                article_checkboxes = []
-                for article in load_articles()[0]:
-                    with gr.Row():
-                        article_checkboxes.append(
-                            gr.Checkbox(
-                                label=article,
-                                value=True,
-                                interactive=True,
-                                elem_id="articles",
-                            )
-                        )
-
-            with gr.Row():
-                gr.Markdown(
-                    """ 
-                    Optinally, you can also provide a topic or keyword to see more questions related to that topic.
-                    """
-                )
-            with gr.Row():
-                topic = gr.Textbox(
-                    label="Topic of the question:", interactive=True, elem_id="normal"
-                )
-            with gr.Row():
-                gr.Markdown(
-                    """
-                    > **Note**: If the topic is left blank, the app will generate random questions from the entire content of articles.
-                    """
-                )
+                        )    
+            
             with gr.Row():
                 qbank_button = gr.Button(
-                    "Set up the question bank!", elem_id="generate_button"
+                    "Initialize the question bank!", elem_id="generate_button"
                 )
 
             with gr.Row():
                 log_textbox2 = gr.Textbox(
-                    "Currently, the app is not initialized.",
+                    "Currently, the question bank is not initialized.",
                     label="App Status",
                 )
 
             # Events
             qbank_button.click(
                 initialize_qbank,
-                [topic, *article_checkboxes],
+                [topic, chnuk_size, chunk_overlap, num_retrieved_chunks, generator_model, 
+                 content_editor_model, format_editor_model, *article_checkboxes],
                 [log_textbox2],
             )
 
@@ -355,7 +364,7 @@ def run_gui():
                 )
             with gr.Row():
                 question_type = gr.Dropdown(
-                    choices=["MCQ", "Fill_in_the_Blanks", "Open-Ended", "Anki"],
+                    choices=["MCQ", "Open-Ended", "Anki"],
                     value="MCQ",
                     label="Qestion type:",
                     interactive=True,
@@ -370,25 +379,26 @@ def run_gui():
                     value="../data/fig_placeholder.png",
                     label="Figure",
                     interactive=False,
-                    width=500,
-                    height=500,
+                    height=300,
                 )
             with gr.Row():
                 question_box = gr.Textbox(
                     "Currently, no questions are generated.",
                     label="Generated a question!",
                     elem_id="normal",
-                    max_lines=40,
+                    max_lines=500,
                 )
             with gr.Accordion(
-                label="Click to see the answer!", elem_id="accordion", open=False
+                label="Click to see the answer!", 
+                elem_id="accordion",
+                open=False
             ):
                 with gr.Row():
                     answer_box = gr.Textbox(
                         "Currently, no answer is generated.",
                         label="Generated Answer",
                         elem_id="normal",
-                        max_lines=40,
+                        lines=5,
                     )
 
             # Events

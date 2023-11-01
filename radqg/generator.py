@@ -27,7 +27,9 @@ class Generator:
         embed_fn: bool,
         chunk_size: int = configs.CHUNK_SIZE,
         chunk_overlap: int = configs.CHUNK_OVERLAP,
+        num_retrieved_chunks: int = configs.NUM_RETRIEVED_CHUNKS,
         collection_name: str = None,
+        selected_articles: list = None,
         generator_model: str = configs.OPENAI_GENERATOR_MODEL,
         content_editor_model: str = configs.OPENAI_CONTENT_EDITOR_MODEL,
         format_editor_model: str = configs.OPENAI_FORMAT_EDITOR_MODEL,
@@ -38,7 +40,9 @@ class Generator:
         self.embed_fn = embed_fn
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
+        self.num_retrieved_chunks = num_retrieved_chunks
         self.collection_name = collection_name
+        self.selected_articles = selected_articles
         self.generator_memory = dict()
         self.collection = self.create_collection()
         self.generator_model = generator_model
@@ -52,6 +56,13 @@ class Generator:
         # Retrieving articles and figures
         self.article_list = retrieve_articles(self.data_dir)
         self.fig_list = retrieve_figures(self.data_dir)
+        if self.selected_articles is not None:
+            self.article_list = [
+                article for article in self.article_list if article["article_file_name"] in self.selected_articles
+            ]
+            self.fig_list = [
+                fig for fig in self.fig_list if fig["article_file_name"] in self.selected_articles
+            ]
 
         # Building the collection
         if self.collection_name is None:
@@ -213,7 +224,7 @@ class Generator:
         # Retrieving the closest chunks to the caption
         out = self.collection.query(
             query_texts=caption,
-            n_results=configs.NUM_RETRIEVED_CHUNKS,
+            n_results=self.num_retrieved_chunks,
             where={"$and": [{"type": "article"}, {"article_name": article_name}]},
         )
 
