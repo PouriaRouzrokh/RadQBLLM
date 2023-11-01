@@ -26,9 +26,8 @@ from radqg.parse_html import retrieve_figures, retrieve_articles
 
 
 def load_articles():
-    
     global all_article_full_names
-    
+
     all_article_short_names = []
     all_article_full_names = []
     for file in os.listdir(configs.TOY_DATA_DIR):
@@ -44,44 +43,50 @@ def load_articles():
 
 
 def get_api(openai_api_key):
-    
     os.environ["OPENAI_API_KEY"] = openai_api_key
-    
+
     try:
         _ = openai.Completion.create(
-            engine="davinci",
-            prompt="This is a test.",
-            max_tokens=5
+            engine="davinci", prompt="This is a test.", max_tokens=5
         )
     except:
         return gr.Textbox("The OpenAI API is not valid. Please try again.")
     else:
-        return gr.Textbox("The OpenAI API was saved and is working as expected. Please proceed to the \"Setup\" tab")
+        return gr.Textbox(
+            'The OpenAI API was saved and is working as expected. Please proceed to the "Setup" tab'
+        )
+
 
 # ----------------------------------------------------------------------------------------
 # initialize_qbank
 
 
-def initialize_qbank(topic, chnuk_size, chunk_overlap, num_retrieved_chunks, 
-                     generator_model, content_editor_model, format_editor_model, 
-                     *article_checkboxes):
-
+def initialize_qbank(
+    topic,
+    chnuk_size,
+    chunk_overlap,
+    num_retrieved_chunks,
+    generator_model,
+    content_editor_model,
+    format_editor_model,
+    *article_checkboxes,
+):
     global generator
     global article_names
     global figpaths
     global captions
     global sampler
-    
+
     # Handling the article selection
     selected_articles = []
     for i, checkbox in enumerate(article_checkboxes):
         if checkbox:
             selected_articles.append(all_article_full_names[i])
-    
+
     # Handling the topic
     if topic == "N/A":
         topic = None
-    
+
     # Initializing the generator
     generator = Generator(
         data_dir=configs.TOY_DATA_DIR,
@@ -93,12 +98,14 @@ def initialize_qbank(topic, chnuk_size, chunk_overlap, num_retrieved_chunks,
         content_editor_model=content_editor_model,
         format_editor_model=format_editor_model,
         selected_articles=selected_articles,
-    )  
-    
+    )
+
     # Setting up the question bank
     article_names, figpaths, captions, sampler = generator.setup_qbank(topic)
-    
-    return gr.Textbox(f"The question bank is set up with {len(selected_articles)} articles selected.")
+
+    return gr.Textbox(
+        f"The question bank is set up with {len(selected_articles)} articles selected."
+    )
 
 
 # ----------------------------------------------------------------------------------------
@@ -106,18 +113,13 @@ def initialize_qbank(topic, chnuk_size, chunk_overlap, num_retrieved_chunks,
 
 
 def generate_question(question_type: str):
-    
     if question_type == "Anki":
         question_type = random.choice(["MCQ", "Fill_in_the_Blanks"])
 
     article_name, figpath, caption = generator.select_figure(
-        article_names, 
-        figpaths, 
-        captions, 
-        sampler, 
-        reset_memory=False
+        article_names, figpaths, captions, sampler, reset_memory=False
     )
-    
+
     qa_dict, *_ = generator.generate_qa(
         qa_fn=openai_qa,
         article_name=article_name,
@@ -125,10 +127,10 @@ def generate_question(question_type: str):
         type_of_question=question_type,
         complete_return=True,
     )
-    
+
     question = qa_dict["question"]
     if "options" in qa_dict.keys():
-        question += "\n\n" + re.sub(r'(, )?([B-E]\))', r'\n\2', qa_dict["options"])
+        question += "\n\n" + re.sub(r"(, )?([B-E]\))", r"\n\2", qa_dict["options"])
 
     return [gr.Image(figpath), question, qa_dict["answer"]]
 
@@ -268,7 +270,7 @@ def run_gui():
                             elem_id="articles",
                         )
                         article_checkboxes.append(checkbox)
-                    
+
             with gr.Row():
                 gr.Markdown(
                     """ 
@@ -277,12 +279,12 @@ def run_gui():
                 )
             with gr.Row():
                 topic = gr.Textbox(
-                    label="Topic of the question:", 
-                    value = "N/A",
-                    interactive=True, 
-                    elem_id="normal"
+                    label="Topic of the question:",
+                    value="N/A",
+                    interactive=True,
+                    elem_id="normal",
                 )
-            
+
             with gr.Row():
                 gr.Markdown(
                     """ 
@@ -334,8 +336,8 @@ def run_gui():
                             value=configs.NUM_RETRIEVED_CHUNKS,
                             interactive=True,
                             elem_id="normal",
-                        )    
-            
+                        )
+
             with gr.Row():
                 qbank_button = gr.Button(
                     "Initialize the question bank!", elem_id="generate_button"
@@ -350,8 +352,16 @@ def run_gui():
             # Events
             qbank_button.click(
                 initialize_qbank,
-                [topic, chnuk_size, chunk_overlap, num_retrieved_chunks, generator_model, 
-                 content_editor_model, format_editor_model, *article_checkboxes],
+                [
+                    topic,
+                    chnuk_size,
+                    chunk_overlap,
+                    num_retrieved_chunks,
+                    generator_model,
+                    content_editor_model,
+                    format_editor_model,
+                    *article_checkboxes,
+                ],
                 [log_textbox2],
             )
 
@@ -389,9 +399,7 @@ def run_gui():
                     max_lines=500,
                 )
             with gr.Accordion(
-                label="Click to see the answer!", 
-                elem_id="accordion",
-                open=False
+                label="Click to see the answer!", elem_id="accordion", open=False
             ):
                 with gr.Row():
                     answer_box = gr.Textbox(

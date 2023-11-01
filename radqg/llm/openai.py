@@ -18,15 +18,17 @@ price_for_chatgpt_tokens: float = 0.0015 / 1000  # $0.01 per 1000 tokens
 # ----------------------------------------------------------------------------------------
 # get_price_for_tokens
 
+
 def get_price_for_tokens(total_tokens: int, model: str) -> float:
     """A function to calculate the price for a given number of tokens."""
-    
+
     if model == "gpt-4":
         return total_tokens * price_for_gpt4_tokens
     elif model == "gpt-3.5-turbo":
         return total_tokens * price_for_chatgpt_tokens
     else:
         raise ValueError("The model is not supported.")
+
 
 # ----------------------------------------------------------------------------------------
 # emb_fn
@@ -62,7 +64,7 @@ def qa(
     # To check the total number of tokens and budget used.
     total_tokens = 0
     total_cost = 0
-    
+
     # Asking for the initial question and answer generation
     prompt1 = get_generator_prompt(
         figure_caption=caption,
@@ -81,7 +83,9 @@ def qa(
         )
         out_dict_string1 = response1.choices[0]["message"]["content"]
         total_tokens += count_tokens(prompt1) + count_tokens(out_dict_string1)
-        total_cost += get_price_for_tokens(total_tokens, model=configs.OPENAI_GENERATOR_MODEL)
+        total_cost += get_price_for_tokens(
+            total_tokens, model=configs.OPENAI_GENERATOR_MODEL
+        )
 
         # Asking for double-checking the question and answer generation
         prompt2 = get_contenteditor_prompt(caption, out_dict_string1)
@@ -95,7 +99,9 @@ def qa(
         )
         out_dict_string2 = response2.choices[0]["message"]["content"]
         total_tokens += count_tokens(prompt2) + count_tokens(out_dict_string2)
-        total_cost += get_price_for_tokens(total_tokens, model=configs.OPENAI_CONTENT_EDITOR_MODEL)
+        total_cost += get_price_for_tokens(
+            total_tokens, model=configs.OPENAI_CONTENT_EDITOR_MODEL
+        )
 
         # Asking for the dictionary formatting
         out_dict_string3 = out_dict_string2
@@ -113,7 +119,9 @@ def qa(
             out_dict_string3 = response3.choices[0]["message"]["content"]
             count_revised += 1
             total_tokens += count_tokens(prompt3) + count_tokens(out_dict_string3)
-            total_cost += get_price_for_tokens(total_tokens, model=configs.OPENAI_FORMAT_EDITOR_MODEL)
+            total_cost += get_price_for_tokens(
+                total_tokens, model=configs.OPENAI_FORMAT_EDITOR_MODEL
+            )
             try:
                 qa_dict = eval(out_dict_string3)
                 assert isinstance(qa_dict, dict)
@@ -124,4 +132,11 @@ def qa(
                 print(out_dict_string3)
                 continue
         if good_question_created:
-            return qa_dict, out_dict_string1, out_dict_string2, out_dict_string3, total_tokens, total_cost
+            return (
+                qa_dict,
+                out_dict_string1,
+                out_dict_string2,
+                out_dict_string3,
+                total_tokens,
+                total_cost,
+            )

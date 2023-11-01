@@ -58,10 +58,14 @@ class Generator:
         self.fig_list = retrieve_figures(self.data_dir)
         if self.selected_articles is not None:
             self.article_list = [
-                article for article in self.article_list if article["article_file_name"] in self.selected_articles
+                article
+                for article in self.article_list
+                if article["article_file_name"] in self.selected_articles
             ]
             self.fig_list = [
-                fig for fig in self.fig_list if fig["article_file_name"] in self.selected_articles
+                fig
+                for fig in self.fig_list
+                if fig["article_file_name"] in self.selected_articles
             ]
 
         # Building the collection
@@ -239,9 +243,29 @@ class Generator:
         context = "..." + "...".join(chunks) + "..."
 
         # Generating the question and answer
-        qa_dict, llm1_response, llm2_response, llm3_response, total_tokens, total_price = qa_fn(
-            caption, context, type_of_question, self.generator_model, self.content_editor_model, self.format_editor_model
+        (
+            qa_dict,
+            llm1_response,
+            llm2_response,
+            llm3_response,
+            total_tokens,
+            total_price,
+        ) = qa_fn(
+            caption,
+            context,
+            type_of_question,
+            self.generator_model,
+            self.content_editor_model,
+            self.format_editor_model,
         )
         if complete_return:
-            return qa_dict, llm1_response, llm2_response, llm3_response, context, total_tokens, total_price
+            return (
+                qa_dict,
+                llm1_response,
+                llm2_response,
+                llm3_response,
+                context,
+                total_tokens,
+                total_price,
+            )
         return qa_dict
