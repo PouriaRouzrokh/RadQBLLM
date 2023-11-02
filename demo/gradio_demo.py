@@ -113,8 +113,8 @@ def initialize_qbank(
 
 
 def generate_question(question_type: str):
-    if question_type == "Anki":
-        question_type = random.choice(["MCQ", "Fill_in_the_Blanks"])
+    if question_type == "Random":
+        question_type = random.choice(["MCQ", "Short-Answer", "Long-Answer"])
 
     article_name, figpath, caption = generator.select_figure(
         article_names, figpaths, captions, sampler, reset_memory=False
@@ -156,16 +156,15 @@ def run_gui():
     #model {background-color: MintCream}
     #central {font-weight: normal; text-align: center; font-size: 16px}
     #normal {font-weight: normal; font-size: 16px}
-    #generate_button {background-color: LightSalmon; font-size: 18px}
-    #upload_button {background-color: LightSalmon; font-size: 18px}
-    #articles {background-color: MintCream; font-size: 16px}
+    #button {background: LightSalmon; font-size: 18px}
+    #articles {background: MintCream; font-size: 16px}
     #title {
         text-align: center;
         width: 90%;
         margin: auto !important;
         font-style: italic;
     }
-    #link_out, #authors_list, #authors_affiliation{
+    #link_out, #authors_list, #authors_affiliation {
         text-align: center;
         min-height: none !important;
     }
@@ -201,7 +200,6 @@ def run_gui():
                             <li style="padding-left: 20px;">The text and the figure captions of the articles you upload will be sent to OpenAI servers for processing. OpenAI claims that it does not store the user inputs; still, please make sure that you have the right to use the articles you upload. No figures will be processed by OpenAI.</li>
                             <li style="padding-left: 20px;">Although we gurantee the overal quality of the questions, we do not gurantee the quality and correctness of each individual questions. Please use your own judgement and check the original articles as references for validating the questions.</li>
                             <li style="padding-left: 20px;">RadQG is not a replacement for the RadioGraphics journal. It is a tool to help you test your knowledge of radiology.</li>
-                            <li style="padding-left: 20px;">If this is the first time you are using this app, please visit the **"About"** tab to learn how to use the app.</li>
                         </ol>    
                     """,
                 elem_id="normal",
@@ -210,7 +208,7 @@ def run_gui():
             with gr.Row():
                 gr.Markdown(
                     """ 
-                    To start, please enter your **OpenAI API key** and click on "Save the API!" button below.<sup>*</sup>.
+                    To start, please enter your **OpenAI Application Programming Interface (API) key** and click on "Save the API!" button below.<sup>*</sup>.
                     <br><sup>*</sup> If you do not have an OpenAI API key or do not know what it is, please visit [here](https://openai.com/blog/openai-api).
                     """
                 )
@@ -225,7 +223,7 @@ def run_gui():
                 )
 
             with gr.Row():
-                api_button = gr.Button("Save the API!", elem_id="generate_button")
+                api_button = gr.Button("Save the API!", elem_id="button")
 
             with gr.Row():
                 log_textbox1 = gr.Textbox(
@@ -249,14 +247,6 @@ def run_gui():
                         """
                 )
 
-            # article_checkboxes = gr.CheckboxGroup(
-            #     choices=load_articles()[0],
-            #     label="Articles:",
-            #     interactive=True,
-            #     container=False,
-            #     elem_id="articles",
-            # )
-
             with gr.Row():
                 gr.Markdown("Articles:", elem_id="normal")
             with gr.Group():
@@ -279,7 +269,7 @@ def run_gui():
                 )
             with gr.Row():
                 topic = gr.Textbox(
-                    label="Topic of the question:",
+                    label="Topic of the question (e.g., Crohn's disease, neuroradiology, etc.):",
                     value="N/A",
                     interactive=True,
                     elem_id="normal",
@@ -340,7 +330,7 @@ def run_gui():
 
             with gr.Row():
                 qbank_button = gr.Button(
-                    "Initialize the question bank!", elem_id="generate_button"
+                    "Initialize the question bank!", elem_id="button"
                 )
 
             with gr.Row():
@@ -374,15 +364,15 @@ def run_gui():
                 )
             with gr.Row():
                 question_type = gr.Dropdown(
-                    choices=["MCQ", "Open-Ended", "Anki"],
-                    value="MCQ",
+                    choices=["Random", "MCQ", "Short-Answer", "Long-Answer"],
+                    value="Random",
                     label="Qestion type:",
                     interactive=True,
                     elem_id="normal",
                 )
             with gr.Row():
                 generate_button = gr.Button(
-                    "Generate a question!", elem_id="generate_button"
+                    "Generate a question!", elem_id="button"
                 )
             with gr.Row():
                 image_box = gr.Image(
@@ -414,12 +404,6 @@ def run_gui():
                 generate_question,
                 [question_type],
                 [image_box, question_box, answer_box],
-            )
-
-        with gr.TabItem("About"):
-            gr.Markdown(
-                """To be developed...!""",
-                elem_id="normal",
             )
 
     try:

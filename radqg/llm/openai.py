@@ -88,7 +88,7 @@ def qa(
         )
 
         # Asking for double-checking the question and answer generation
-        prompt2 = get_contenteditor_prompt(caption, out_dict_string1)
+        prompt2 = get_contenteditor_prompt(caption, out_dict_string1, type_of_question)
         message2 = [{"role": "user", "content": prompt2}]
         response2 = openai.ChatCompletion.create(
             model=content_editor_model,

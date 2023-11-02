@@ -15,7 +15,9 @@ def retrieve_figures(root_directory: str) -> list[dict]:
     articles in the format of HTML files."""
 
     # Regular expression to match the specific format of the figures
-    image_pattern = re.compile(r"images_medium_rg\.\d+\.fig\d+[a-z]?\.gif")
+    # image_pattern = re.compile(r"images_medium_rg\.\d+\.fig\d+[a-z]?\.gif")
+    # image_pattern = re.compile(r"images_medium_[a-z0-9]+(?:_\d+)?\.fig\d+[a-z]?\.((gif)|(jpeg)|(jpg)|(png))")
+    image_pattern = re.compile(r"images_medium.*\.(gif|jpeg|jpg|png)$")
 
     # Iterating over each file in the directory
     figures_list = list()
