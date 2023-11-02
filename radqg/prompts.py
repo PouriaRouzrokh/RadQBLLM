@@ -70,10 +70,8 @@ def get_generator_prompt(
 
 
 def get_contenteditor_prompt(
-    figure_caption: str, 
-    qa_dict_string: str,
-    question_type: str
-    ) -> str:
+    figure_caption: str, qa_dict_string: str, question_type: str
+) -> str:
     prompt = f"""
     
     -- Instructions --

@@ -371,9 +371,7 @@ def run_gui():
                     elem_id="normal",
                 )
             with gr.Row():
-                generate_button = gr.Button(
-                    "Generate a question!", elem_id="button"
-                )
+                generate_button = gr.Button("Generate a question!", elem_id="button")
             with gr.Row():
                 image_box = gr.Image(
                     value="../data/fig_placeholder.png",
