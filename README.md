@@ -30,6 +30,12 @@ run the `demo/notebook_demo.ipynb` file to run the pipeline in a notebook enviro
 
 ```python
 
+### 11/02/2023:
+
+- Added the `gradio_demo.py` file to include the GUI for the pipeline.
+- Optimized the prompts.
+- Deleted the `while` loops in the `openai.py` file.
+
 ### 10/31/2023:
 
 - Added the "option" key for the dictionary returned from LLMs for the MCQs.
