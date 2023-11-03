@@ -7,7 +7,7 @@
 
 
 def get_generator_prompt(
-    figure_caption: str, context: str, type_of_question: str
+    figure_number: str, figure_caption: str, context: str, type_of_question: str
 ) -> str:
     assert type_of_question in ["MCQ", "Short-Answer", "Long-Answer"]
 
@@ -24,7 +24,7 @@ def get_generator_prompt(
         - The question and answer should emphasize recall and be useful for an Anki flashcard.
         """,
         "Long-Answer": """ 
-        - Craft a question related to the figure and context that encourages a detailed response, analysis, or explanation from the trainee.
+        - Craft an essay question related to the figure and context that encourages a detailed response, analysis, or explanation from the trainee.
         - Provide a detailed response to the question in the "answer" key of the question output dictionary.
         """,
     }
@@ -33,22 +33,26 @@ def get_generator_prompt(
     
     -- Instructions --
     
-    You will receive two inputs: a figure caption and a related context text to the figure.
+    You will receive three inputs: a string containing the sub-figure number, a figure caption and a related context text to the figure.
     Based on these inputs, your job is to do the following tasks:
     
     1) Develop a very difficult clinical scenario-based {type_of_question} question that is directly related to the visual content in the figure.
     2) You can also ask about the information provided in the context, but the question should still need the user to figure out the diagnosis or some imaging findings from the figure.
-    3) You must not mention more than one clinical scenario in the stem of question.
-    4) You must not introduce more than one patient in the stem of the question; e.g., avoide stems that contain phrases like this: "A 67-year-old man and a 44-year-old man both present with epigastric pain..."
-    5) You must not disclose any diagnosis and imaging findings that are mentioned in the figure caption within the question.
-    6) You must not describe the imaging findings that are mentioned in the figure caption within the question.
-    7) Ensure the question aligns with the following instructions: {question_instructions[type_of_question]}
-    8) Your output should be in the following dictionary format if the question is MCQ:
+    3) The user is only going to see the subfigure with the number provided. Therefore, you must not ask about information that is provided in other subfigures. For example, if the subfigure number is Figure 15d, just ask questions from the (d) section of the figure caption.
+    4) You must not mention more than one clinical scenario in the stem of question.
+    5) You must not introduce more than one patient in the stem of the question; e.g., avoide stems that contain phrases like this: "A 67-year-old man and a 44-year-old man both present with epigastric pain..."
+    6) You must not disclose any diagnosis and imaging findings that are mentioned in the figure caption within the question.
+    7) You must not describe the imaging findings that are mentioned in the figure caption within the question.
+    8) Ensure the question aligns with the following instructions: {question_instructions[type_of_question]}
+    9) Your output should be in the following dictionary format if the question is MCQ:
        {{'question': 'Your question here (including the choices if MCQ question)', 'options': "The A), B), C), D), and E) options here', 'answer': 'The answer here'}}
        and the in the follwing dictionary format if the question is not MCQ:
        {{'question': 'Your question here (including the choices if MCQ question)', 'answer': 'The answer here'}}
     
     -- Inputs --
+    
+    ## String Containing the Figure Number
+    {figure_number}
     
     ## Figure Caption
     {figure_caption}

@@ -31,7 +31,7 @@ VECTOR_DB_DIR = redirect_path("data/vector_db")
 OPENAI_EMBEDDING_MODEL = "text-embedding-ada-002"
 OPENAI_GENERATOR_MODEL = "gpt-4"
 OPENAI_CONTENT_EDITOR_MODEL = "gpt-4"
-OPENAI_FORMAT_EDITOR_MODEL = "gpt-3.5-turbo"
+OPENAI_FORMAT_EDITOR_MODEL = "gpt-4"  # "gpt-3.5-turbo" will also work.
 
 # ----------------------------------------------------------------------------------------
 # Retrieval arguments

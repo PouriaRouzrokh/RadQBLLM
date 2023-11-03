@@ -219,6 +219,7 @@ class Generator:
         self,
         qa_fn: callable,
         article_name: str,
+        figpath: str,
         caption: str,
         type_of_question: str,
         complete_return: bool = False,
@@ -231,6 +232,9 @@ class Generator:
             n_results=self.num_retrieved_chunks,
             where={"$and": [{"type": "article"}, {"article_name": article_name}]},
         )
+
+        # Finding the figure number
+        fignum = figpath.split("/")[-1].split(".")[-2]
 
         # Building the context from the retrieved chunks
         chunks = out["documents"][0]
@@ -251,6 +255,7 @@ class Generator:
             total_tokens,
             total_price,
         ) = qa_fn(
+            fignum,
             caption,
             context,
             type_of_question,
