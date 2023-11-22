@@ -2,10 +2,11 @@
 # Description: A script containing general functionalites for working with OpenAI API.
 ##########################################################################################
 
+import json
 import openai
 import radqg.configs as configs
-from radqg.prompts import get_generator_prompt
-from radqg.prompts import get_contenteditor_prompt, get_formateditor_prompt
+from radqg.prompts import get_radiologist_base_prompt
+from radqg.prompts import get_educationist_base_prompt
 from radqg.utils import count_tokens
 
 # ----------------------------------------------------------------------------------------
@@ -48,6 +49,25 @@ def embed_fn(
 
 
 # ----------------------------------------------------------------------------------------
+# get_qa_string
+
+
+def get_qa_string(json_string, question_type):
+    # Convert the string to JSON
+    json_data = json.loads(json_string)
+
+    # Generate the required string
+    if question_type.lower() == "mcq":
+        formatted_string = f"Question stem: {json_data['question']}, Options: {json_data['options']}, Answer: {json_data['answer']}"
+    else:
+        formatted_string = (
+            f"Question stem: {json_data['question']}, Answer: {json_data['answer']}"
+        )
+
+    return formatted_string
+
+
+# ----------------------------------------------------------------------------------------
 # qa
 
 
@@ -56,9 +76,9 @@ def qa(
     caption: str,
     context: str,
     type_of_question: str,
-    generator_model: str = configs.OPENAI_GENERATOR_MODEL,
-    content_editor_model: str = configs.OPENAI_CONTENT_EDITOR_MODEL,
-    format_editor_model: str = configs.OPENAI_FORMAT_EDITOR_MODEL,
+    generator_model: str = configs.OPENAI_RADIOLOGIST_MODEL,
+    content_editor_model: str = configs.OPENAI_EDUCATOR_MODEL,
+    verbose=True,
 ) -> dict:
     """A function to generate a question from a figure caption using the OpenAI LLMs."""
 
@@ -69,69 +89,78 @@ def qa(
     print(f"fignum: {fignum}")
 
     # Asking for the initial question and answer generation
-    prompt1 = get_generator_prompt(
+    prompt1 = get_radiologist_base_prompt(
         figure_number=fignum,
         figure_caption=caption,
         context=context,
         type_of_question=type_of_question,
     )
-    good_question_created = False
-    message1 = [{"role": "user", "content": prompt1}]
-    response1 = openai.ChatCompletion.create(
-        model=generator_model,
-        messages=message1,
-        temperature=0.6,
-        max_tokens=2000,
-        frequency_penalty=0.0,
-    )
-    out_dict_string1 = response1.choices[0]["message"]["content"]
-    total_tokens += count_tokens(prompt1) + count_tokens(out_dict_string1)
-    total_cost += get_price_for_tokens(
-        total_tokens, model=configs.OPENAI_GENERATOR_MODEL
-    )
+    message1 = [
+        {
+            "role": "system",
+            "content": "You are an expert radiologist and your job is to design a question for a radiology figure to be answered by a radiology resident.",
+        },
+        {"role": "user", "content": prompt1},
+    ]
+    num_revised = 0
+    while num_revised < 10:
+        # Ask radiologist agent to generate a question and answer
+        response1 = openai.ChatCompletion.create(
+            model=generator_model,
+            messages=message1,
+            temperature=0.5,
+            max_tokens=2000,
+            frequency_penalty=0.0,
+        )
+        out_dict_string1 = response1.choices[0]["message"]["content"]
+        total_tokens += count_tokens(prompt1) + count_tokens(out_dict_string1)
+        total_cost += get_price_for_tokens(
+            total_tokens, model=configs.OPENAI_RADIOLOGIST_MODEL
+        )
+        qa_string = get_qa_string(out_dict_string1, type_of_question)
 
-    # Asking for double-checking the question and answer generation
-    prompt2 = get_contenteditor_prompt(caption, out_dict_string1, type_of_question)
-    message2 = [{"role": "user", "content": prompt2}]
-    response2 = openai.ChatCompletion.create(
-        model=content_editor_model,
-        messages=message2,
-        temperature=0.6,
-        max_tokens=2000,
-        frequency_penalty=0.0,
-    )
-    out_dict_string2 = response2.choices[0]["message"]["content"]
-    total_tokens += count_tokens(prompt2) + count_tokens(out_dict_string2)
-    total_cost += get_price_for_tokens(
-        total_tokens, model=configs.OPENAI_CONTENT_EDITOR_MODEL
-    )
+        if verbose:
+            print(f"\n---------Round {num_revised+1}---------\n")
+            print(f"Radiologist output: {out_dict_string1}")
 
-    # Asking for the dictionary formatting
-    out_dict_string3 = out_dict_string2
-    prompt3 = get_formateditor_prompt(out_dict_string3)
-    message3 = [{"role": "user", "content": prompt3}]
-    response3 = openai.ChatCompletion.create(
-        model=format_editor_model,
-        messages=message3,
-        temperature=0.2,
-        max_tokens=2000,
-        frequency_penalty=0.0,
-    )
-    out_dict_string3 = response3.choices[0]["message"]["content"]
-    total_tokens += count_tokens(prompt3) + count_tokens(out_dict_string3)
-    total_cost += get_price_for_tokens(
-        total_tokens, model=configs.OPENAI_FORMAT_EDITOR_MODEL
-    )
-    qa_dict = eval(out_dict_string3)
-    assert isinstance(
-        qa_dict, dict
-    ), f"The following string is not a valid Python dictionary:\n{out_dict_string3}"
+        # Asking educationist agent to evaluate the question and answer
+        prompt2 = get_educationist_base_prompt(caption, qa_string, type_of_question)
+        message2 = [
+            {
+                "role": "system",
+                "content": "You are an expert educationist and your job is to double-check the question and answer generated by the radiologist.",
+            },
+            {"role": "user", "content": prompt2},
+        ]
+        response2 = openai.ChatCompletion.create(
+            model=content_editor_model,
+            messages=message2,
+            temperature=0.6,
+            max_tokens=2000,
+            frequency_penalty=0.0,
+        )
+        out_dict_string2 = response2.choices[0]["message"]["content"]
+        total_tokens += count_tokens(prompt2) + count_tokens(out_dict_string2)
+        total_cost += get_price_for_tokens(
+            total_tokens, model=configs.OPENAI_EDUCATOR_MODEL
+        )
+        educationist_response = json.loads(out_dict_string2)
 
-    return (
-        qa_dict,
-        out_dict_string1,
-        out_dict_string2,
-        out_dict_string3,
-        total_tokens,
-        total_cost,
-    )
+        if verbose:
+            print(f"Educationist output: {out_dict_string2}")
+
+        # If the educationist approves the question and answer, return the question and answer
+        if educationist_response["Status"] == "Pass":
+            qa_json = json.loads(out_dict_string1)
+            return (
+                qa_json,
+                total_tokens,
+                total_cost,
+            )
+
+        # If the educationist rejects the question and answer, ask the radiologist to revise the question and answer
+        num_revised += 1
+        message1 += [
+            {"role": "assistant", "content": out_dict_string1},
+            {"role": "user", "content": educationist_response["Message"]},
+        ]

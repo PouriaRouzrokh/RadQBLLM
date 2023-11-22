@@ -3,13 +3,13 @@
 ##########################################################################################
 
 # ----------------------------------------------------------------------------------------
-# get_generator_prompt
+# get_radiologist_base_prompt
 
 
-def get_generator_prompt(
+def get_radiologist_base_prompt(
     figure_number: str, figure_caption: str, context: str, type_of_question: str
 ) -> str:
-    assert type_of_question in ["MCQ", "Short-Answer", "Long-Answer"]
+    assert type_of_question in ["MCQ", "Short-Answer"]
 
     question_instructions = {
         "MCQ": """ 
@@ -29,25 +29,56 @@ def get_generator_prompt(
         """,
     }
 
+    dict_instructions = {
+        "MCQ": """
+            {
+            "question": "Your question here",
+            "options": {
+                "A": "Option A details here",
+                "B": "Option B details here",
+                "C": "Option C details here",
+                "D": "Option D details here",
+                "E": "Option E details here"
+            },
+            "answer": "The answer here"
+            }
+        """,
+        "Short-Answer": """
+            {
+            "question": "Your question here",
+            "answer": "The answer here"
+            }
+        """,
+        "Long-Answer": """
+            {
+            "question": "Your question here",
+            "answer": "The answer here"
+            }
+        """,
+    }
+
+    # one prompt per question type
+    # ```json```
+    # UNDER NO CIRCUMSTANCES
+    # Arrow or arrow head
+
     prompt = f"""
     
     -- Instructions --
     
     You will receive three inputs: a string containing the sub-figure number, a figure caption and a related context text to the figure.
-    Based on these inputs, your job is to do the following tasks:
+    Based on these inputs, your job is to design a question answer in the following ```json``` format: {dict_instructions[type_of_question]}
     
     1) Develop a very difficult clinical scenario-based {type_of_question} question that is directly related to the visual content in the figure.
     2) You can also ask about the information provided in the context, but the question should still need the user to figure out the diagnosis or some imaging findings from the figure.
     3) The user is only going to see the subfigure with the number provided. Therefore, you must not ask about information that is provided in other subfigures. For example, if the subfigure number is Figure 15d, just ask questions from the (d) section of the figure caption.
-    4) You must not mention more than one clinical scenario in the stem of question.
-    5) You must not introduce more than one patient in the stem of the question; e.g., avoide stems that contain phrases like this: "A 67-year-old man and a 44-year-old man both present with epigastric pain..."
-    6) You must not disclose any diagnosis and imaging findings that are mentioned in the figure caption within the question.
-    7) You must not describe the imaging findings that are mentioned in the figure caption within the question.
-    8) Ensure the question aligns with the following instructions: {question_instructions[type_of_question]}
-    9) Your output should be in the following dictionary format if the question is MCQ:
-       {{'question': 'Your question here (including the choices if MCQ question)', 'options': "The A), B), C), D), and E) options here', 'answer': 'The answer here'}}
-       and the in the follwing dictionary format if the question is not MCQ:
-       {{'question': 'Your question here (including the choices if MCQ question)', 'answer': 'The answer here'}}
+    4) If there is a mentioning of an annotation (e.g., arrow, arrow head, star, etc.) in the figure caption, you can ask about it. However, you must not disclose the diagnosis or imaging findings mentioned in the figure caption.
+    5) UNDER NO CIRCUMSTANCES, mention more than one clinical scenario in the stem of question.
+    6) UNDER NO CIRCUMSTANCES, introduce more than one patient in the stem of the question; e.g., avoide stems that contain phrases like this: "A 67-year-old man and a 44-year-old man both present with epigastric pain..."
+    7) UNDER NO CIRCUMSTANCES, disclose any diagnosis and imaging findings that are mentioned in the figure caption within the question. That's for the user to understand.
+    8) UNDER NO CIRCUMSTANCES, describe the imaging findings that are mentioned in the figure caption within the question.
+    9) Ensure the question aligns with the following instructions: {question_instructions[type_of_question]}
+
     
     -- Inputs --
     
@@ -62,7 +93,7 @@ def get_generator_prompt(
 
     --- Your output ---
     
-    Please provide the output dictionary below:
+    Please provide the output ```json``` below:
     
     """
 
@@ -70,77 +101,145 @@ def get_generator_prompt(
 
 
 # ----------------------------------------------------------------------------------------
-# get_contenteditor_prompt
+# get_educationist_base_prompt
 
 
-def get_contenteditor_prompt(
+def get_educationist_base_prompt(
     figure_caption: str, qa_dict_string: str, question_type: str
 ) -> str:
+    question_instructions = {
+        "MCQ": """ 
+        - Craft a question that is clear, concise, and directly related to the figure and context provided.\n
+        - Provide five options, labeling them as A, B, C, D, and E. Ensure that only one of these is the correct answer.\n
+        - Include all five options in the output dictionary under the "question" key.\n
+        - Avoid using 'All of the above' or 'None of the above' among the options.
+        - Provide a detailed response to the question in the "answer" key of the question output dictionary.
+        """,
+        "Short-Answer": """ 
+        - Craft a question or statement related to the figure and context that has a one-word or short phrase response.
+        - The question and answer should emphasize recall and be useful for an Anki flashcard.
+        - The question could also be a fill-in-the-blank question.
+        """,
+    }
+
+    example_instructions = {
+        """MCQ""": """
+        
+        -- Example 1 --
+        
+        **Input:**
+    
+        - Figure Caption: 
+        "Figure 18b.Surgically-confirmed foreign body perforation in two patients.(a)Axial nonenhanced CT image in a 16-year-old girl who ingested a small bone shows a linear density in a loop of small bowel in the mid-left abdomen (arrow), extending through the bowel wall, with perforation that was later confirmed at surgery.(b)Axial intravenous contrast-enhanced CT image in a 78-year-old woman with right-sided abdominal pain shows a thin bone (arrow) causing focal small-bowel perforation, with associated mural edema, mesenteric fat stranding, and ascites."
+        
+        - Question-answer:
+        "question stem": "A 16-year-old girl presents to the emergency department with severe left-sided abdominal pain. A non-enhanced CT scan of the abdomen reveals a linear density in a loop of small bowel in the mid-left abdomen. Based on the imaging findings, which of the following is the most likely diagnosis? 
+        "options": "A) Small bowel obstruction B) Foreign body perforation C) Acute mesenteric ischemia D) Inflammatory bowel disease E) Small bowel ischemia"
+        "answer": "B) Foreign body perforation. The CT scan findings of a linear density in a loop of small bowel extending through the bowel wall are consistent with a foreign body perforation. The history of the patient having eaten a chicken meal earlier in the day supports the possibility that a small bone might have been ingested and caused the perforation."
+        
+        **Exected Output:**
+        {{"Status": "Fail", "Message": "The sentence 'A non-enhanced CT scan of the abdomen reveals a linear density in a loop of small bowel in the mid-left abdomen' is revealing an imaging finding; This is the job of the examenee to guess the imaging findnigs. Revise your quesiton like like this: A non-enhanced CT scan of the abdomen is provided in the figure. Regnerate the ```json`` with modified question stem, and if needed, quesiton options or answer."}}
+        
+        -- Example 2 --
+         **Input:**
+    
+        - Figure Caption: 
+        "Figure 18b.Surgically-confirmed foreign body perforation in two patients.(a)Axial nonenhanced CT image in a 16-year-old girl who ingested a small bone shows a linear density in a loop of small bowel in the mid-left abdomen (arrow), extending through the bowel wall, with perforation that was later confirmed at surgery.(b)Axial intravenous contrast-enhanced CT image in a 78-year-old woman with right-sided abdominal pain shows a thin bone (arrow) causing focal small-bowel perforation, with associated mural edema, mesenteric fat stranding, and ascites."
+        
+        - Question-answer:
+        "question stem": "A 16-year-old girl presents to the emergency department with severe left-sided abdominal pain. A non-enhanced CT scan of the abdomen is provided in figure 2. Based on the imaging findings, which of the following is the most likely diagnosis? 
+        "options": "A) Small bowel obstruction B) Foreign body perforation C) Acute mesenteric ischemia D) Inflammatory bowel disease E) Small bowel ischemia"
+        "answer": "B) Foreign body perforation. The CT scan findings of a linear density in a loop of small bowel extending through the bowel wall are consistent with a foreign body perforation. The history of the patient having eaten a chicken meal earlier in the day supports the possibility that a small bone might have been ingested and caused the perforation."
+        
+        **Exected Output:**
+        {{"Status": "Fail", "Message": "The sentence 'A non-enhanced CT scan of the abdomen is provided in figure 2' is mentioning the number of the figure. You must not mention the number of figure in the question stem. Revise your quesiton like like this: A non-enhanced CT scan of the abdomen is provided in the figure. Regnerate the ```json`` with modified question stem, but do not modify the question options or the answer."}}
+        
+        -- Example 3 --
+        
+        **Input:**
+    
+        - Figure Caption: 
+        "Figure 18b.Surgically-confirmed foreign body perforation in two patients.(a)Axial nonenhanced CT image in a 16-year-old girl who ingested a small bone shows a linear density in a loop of small bowel in the mid-left abdomen (arrow), extending through the bowel wall, with perforation that was later confirmed at surgery.(b)Axial intravenous contrast-enhanced CT image in a 78-year-old woman with right-sided abdominal pain shows a thin bone (arrow) causing focal small-bowel perforation, with associated mural edema, mesenteric fat stranding, and ascites."
+        
+        - Question-answer:
+        "question stem": "A 16-year-old girl presents to the emergency department with severe left-sided abdominal pain. A non-enhanced CT scan of the abdomen is provided. Based on the imaging findings, which of the following is the most likely diagnosis? 
+        "options": "A) Small bowel obstruction B) Foreign body perforation C) Acute mesenteric ischemia D) Inflammatory bowel disease E) Small bowel ischemia"
+        "answer": "B) Foreign body perforation."
+        
+        **Exected Output:**
+        {{"Status": "Fail", "Message": "Your question stem and options are good, but your answer is too short for an MCQ question. Regenerate the ```json``` to provide more details in the answer, but don't change the question stem or options."}}
+        
+        """,
+        """Short-Answer""": """  
+       -- Example 1 --
+        
+        **Input:**
+    
+        - Figure Caption: 
+        "Figure 18b.Surgically-confirmed foreign body perforation in two patients.(a)Axial nonenhanced CT image in a 16-year-old girl who ingested a small bone shows a linear density in a loop of small bowel in the mid-left abdomen (arrow), extending through the bowel wall, with perforation that was later confirmed at surgery.(b)Axial intravenous contrast-enhanced CT image in a 78-year-old woman with right-sided abdominal pain shows a thin bone (arrow) causing focal small-bowel perforation, with associated mural edema, mesenteric fat stranding, and ascites."
+        
+        - Question-answer:
+        "question stem": "A 16-year-old girl presents to the emergency department with severe left-sided abdominal pain. A non-enhanced CT scan of the abdomen reveals a linear density in a loop of small bowel in the mid-left abdomen. Based on the imaging findings, what is the most likely diagnosis? 
+        "answer": "Foreign body perforation"
+        
+        **Exected Output:**
+        {{"Status": "Fail", "Message": "The sentence 'A non-enhanced CT scan of the abdomen reveals a linear density in a loop of small bowel in the mid-left abdomen' is revealing an imaging finding; This is the job of the examenee to guess the imaging findnigs. Revise your quesiton like like this: A non-enhanced CT scan of the abdomen is provided in the figure. Regnerate the ```json`` with modified question stem, and if needed, a modified answer."}}
+        
+        -- Example 2 --
+         **Input:**
+    
+        - Figure Caption: 
+        "Figure 18b.Surgically-confirmed foreign body perforation in two patients.(a)Axial nonenhanced CT image in a 16-year-old girl who ingested a small bone shows a linear density in a loop of small bowel in the mid-left abdomen (arrow), extending through the bowel wall, with perforation that was later confirmed at surgery.(b)Axial intravenous contrast-enhanced CT image in a 78-year-old woman with right-sided abdominal pain shows a thin bone (arrow) causing focal small-bowel perforation, with associated mural edema, mesenteric fat stranding, and ascites."
+        
+        - Question-answer:
+        "question stem": "A 16-year-old girl presents to the emergency department with severe left-sided abdominal pain. A non-enhanced CT scan of the abdomen is provided in figure 2. Based on the imaging findings, what is the most likely diagnosis? 
+        "answer": "Foreign body perforation"
+        
+        **Exected Output:**
+        {{"Status": "Fail", "Message": "The sentence 'A non-enhanced CT scan of the abdomen is provided in figure 2' is mentioning the number of the figure. You must not mention the number of figure in the question stem. Revise your quesiton like like this: A non-enhanced CT scan of the abdomen is provided in the figure. Regnerate the ```json`` with modified question stem, but do not change the answer."}}
+        
+        -- Example 3 --
+        
+        **Input:**
+    
+        - Figure Caption: 
+        "Figure 18b.Surgically-confirmed foreign body perforation in two patients.(a)Axial nonenhanced CT image in a 16-year-old girl who ingested a small bone shows a linear density in a loop of small bowel in the mid-left abdomen (arrow), extending through the bowel wall, with perforation that was later confirmed at surgery.(b)Axial intravenous contrast-enhanced CT image in a 78-year-old woman with right-sided abdominal pain shows a thin bone (arrow) causing focal small-bowel perforation, with associated mural edema, mesenteric fat stranding, and ascites."
+        
+        - Question-answer:
+        "question stem": "A 16-year-old girl presents to the emergency department with severe left-sided abdominal pain. A non-enhanced CT scan of the abdomen is provided. Based on the imaging findings, what is the most likely diagnosis? 
+        "answer": "B) Foreign body perforation. The CT scan findings of a linear density in a loop of small bowel extending through the bowel wall are consistent with a foreign body perforation. The history of the patient having eaten a chicken meal earlier in the day supports the possibility that a small bone might have been ingested and caused the perforation."
+        
+        **Exected Output:**
+        {{"Status": "Fail", "Message": "Your question is good but your answer is too long for a short-answer question. Please revise your answer to be a one-word or short phrase response. Regenerate the ```json``` with modified answer, but do not change the question stem."}}
+       
+        """,
+    }
+
     prompt = f"""
     
     -- Instructions --
     
-    You will receive three inputs: a figure caption, a question-answer dictionary, a question type. 
-    Your job is to do the following tasks:
+    You will receive two inputs: a figure caption, and a question-answer created by a radiologist for the figure.
+    Your job is to check the question for the following criteria and output a ```JSON``` with two keys:
+    "Status": "Pass" or "Fail"
+    "Message": "Your step-by-step evaluation of the current question and instructions for the radiologist to correct it, if needed."
+    Always tell the radiologist to regenrate a ```json``` and provide instructions on what keys to change or not to change.
     
-    1) Read the figure caption and the question-answer dictionary and edit or change the question to ensure it is not disclosing the diagnosis and imaging findings mentioned
-    in the figure caption. If the original question is describing some imaging findings, remove them.
+    Here are the criteria:
     
-    2) Do not change the "answer" or "options" key in the dictionary and only edit the "question".
+    1) UNDER NO CIRCUMSTANCES, the question stem must disclose any diagnosis or imaging findings that are mentioned in the figure caption.
+    It is OK if the question options are mentioning the diagnosis or imaging findings.
+    It is OK if the question stem is asking the examinee about what an annotation (e.g., arrow, arrow head, bracket, star, etc.) in the figure is referring to, but it must not disclose answer to that in the question stem.
+    mentioned in the figure caption. 
+        
+    2) The figure must be referenced in the question but the figure number must not be disclosed; 
+    e.g., `Figure 9.a` must change to a phrase like "the figure provided" or "the figure above".
     
-    3) Ensure that the figure is referenced in the question but the figure number is not disclosed; e.g., instead of Figure 9.a you should use the phrase "the figure provided" or "the figure above".
+    3) The question must meet the following criteria: {question_instructions[question_type]}
     
-    4) Ensure that the question matches the type of question: 
-        - If the question is an MCQ, ensure that the question has five options mentioned in the "options" key of the dictionary.
-        - If the question is a fill-in-the-blanks question, ensure that the text in the question has one or more blanks (denoted by "-----") in it.
-        - If the question is an open-ended question, ensure that the question is open-ended and does not have any blanks or options.
+    --- Example ---
     
-    5) Your output should be in the following format if the question type is MCQ:
-    {{'question': 'Your question here (including the choices if MCQ question)', 'options': "The A), B), C), D), and E) options here', 'answer': 'The answer here'}}
-    and the in the follwing format if the question type is not MCQ:
-    {{'question': 'Your question here', 'answer': 'The answer here'}}
-    
-    --- Example 1 ---
-    
-    **Input:**
-    
-    - Figure Caption: 
-    "Figure 18b.Surgically-confirmed foreign body perforation in two patients.(a)Axial nonenhanced CT image in a 16-year-old girl who ingested a small bone shows a linear density in a loop of small bowel in the mid-left abdomen (arrow), extending through the bowel wall, with perforation that was later confirmed at surgery.(b)Axial intravenous contrast-enhanced CT image in a 78-year-old woman with right-sided abdominal pain shows a thin bone (arrow) causing focal small-bowel perforation, with associated mural edema, mesenteric fat stranding, and ascites."
-    
-    - Question-answer dictionary:
-    {{"question": "A 16-year-old girl presents to the emergency department with severe left-sided abdominal pain. A non-enhanced CT scan of the abdomen reveals a linear density in a loop of small bowel in the mid-left abdomen. Based on the imaging findings, which of the following is the most likely diagnosis? 
-    "options": "A) Small bowel obstruction B) Foreign body perforation C) Acute mesenteric ischemia D) Inflammatory bowel disease E) Small bowel ischemia"
-    "answer": "B) Foreign body perforation. The CT scan findings of a linear density in a loop of small bowel extending through the bowel wall are consistent with a foreign body perforation. The history of the patient having eaten a chicken meal earlier in the day supports the possibility that a small bone might have been ingested and caused the perforation."}}
-    
-    - Question type:
-    MCQ
-    
-    **Exected Output:**
-    
-    {{"question": "A 16-year-old girl presents to the emergency department with severe left-sided abdominal pain. A non-enhanced CT scan of the abdomen is provided. Based on the imaging findings, which of the following is the most likely diagnosis?", 
-    "options": "A) Small bowel obstruction B) Foreign body perforation C) Acute mesenteric ischemia D) Inflammatory bowel disease E) Small bowel ischemia",
-    "answer": "B) Foreign body perforation. The CT scan findings of a linear density in a loop of small bowel extending through the bowel wall are consistent with a foreign body perforation. The history of the patient having eaten a chicken meal earlier in the day supports the possibility that a small bone might have been ingested and caused the perforation."}}
-    
-    
-    --- Example 2 ---
-    
-    **Input:**
-    
-    - Figure Caption: 
-    "Figure 4b.Acute mesenteric venous ischemia in a 43-year-old woman with positive test results for lupus anticoagulant who presented with acute abdominal pain. Axial(a)and coronal(b)intravenous contrast-enhanced CT images show an occlusive thrombus within the superior mesenteric vein (white arrow) and its jejunal branches, with several loops of thick-walled jejunum (arrowheads) that show marked mural edema and a target appearance of the bowel, which is poorly enhancing. Note the mesenteric edema and fluid (black arrow inb), common features of mesenteric venous ischemia."
-    
-    - Question-answer dictionary:
-    {{"question": "A 43-year-old woman with a positive test for lupus anticoagulant presents with acute abdominal pain. The figure provided shows CT images with several loops of thick-walled jejunum and mesenteric edema. What could be a possible cause for her condition based on the imaging findings?", 
-    "answer": "Acute mesenteric venous ischemia."}}
-    
-    - Question type:
-    Short-Answer
-    
-    **Exected Output:**
-    
-    {{"question': "A 43-year-old woman with a positive test for lupus anticoagulant presents with acute abdominal pain. The figure provided shows CT images for the patient. What could be a possible cause for her condition?",
-    "answer": "Acute mesenteric venous ischemia."}}
-   
+    {example_instructions[question_type]}
     
     --- Input ---
         
@@ -150,44 +249,9 @@ def get_contenteditor_prompt(
     - Question-Answer Pair: 
     {qa_dict_string}
     
-    - Type of Question:
-    {question_type}
-    
     --- Your output ---
-    Please provide the modified question-answer pair below:
+    Please provide the output ```json``` below:
     
-    """
-
-    return prompt
-
-
-# ----------------------------------------------------------------------------------------
-# get_formateditor_prompt
-
-
-def get_formateditor_prompt(qa_dict_string: str) -> str:
-    prompt = f"""
-    ---
-    Read the provided input string below and modify it so that it can be converted into a Python dictionary with the eval() function.
-    The output dictionary must contain at least two keys: 'question' and 'answer', and it could optionally have an "options" key if the question is an MCQ.
-    
-    Input String: "{qa_dict_string}"
-
-    --- Further instructions ---
-        1. Examine the input string to ensure that it is formatted correctly to be interpreted as a dictionary by the eval() function.
-        2. Ensure that the resulting dictionary contains the necessary keys: 'question' and 'answer'.
-        3. If the question is an MCQ, ensure it also contains the key `options`.
-        3. Make sure that the ' and " characters are matched correctly.
-        4. If there is any ' or " in the string except for the ones that are used to enclose the keys and values, replace them with `.
-        5. If the input string is not correctly formatted or lacks the necessary keys, correct the format and/or include the missing elements.
-        6. The output should be a Python dictionary with "question", "answer", and an optional "options" keys.
-
-    --- Example ---
-        input: "{{'question': 'What is radiologists' job?', 'answer: 'Reading medical images'}}"
-        output: {{'question': 'What is radiologists` job?', 'answer': 'Reading medical images'}}
-    ---
-
-    Please provide the output below:
     """
 
     return prompt

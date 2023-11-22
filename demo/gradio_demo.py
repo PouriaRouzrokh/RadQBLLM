@@ -67,18 +67,13 @@ def generate_question(question_type: str):
         )
 
         # Generating a question
-
-        if question_type == "Random":
-            question_type = random.choice(["MCQ", "Short-Answer", "Long-Answer"])
-        elif question_type == "Multiple choice":
+        if question_type == "Multiple choice":
             question_type = "MCQ"
         elif question_type == "Short answer (suitable for flash cards)":
             question_type = "Short-Answer"
-        elif question_type == "Open-ended (suitable for essay exams)":
-            question_type = "Long-Answer"
 
         try:
-            qa_dict, *_ = generator.generate_qa(
+            qa_json, *_ = generator.generate_qa(
                 qa_fn=openai_qa,
                 article_name=article_name,
                 figpath=figpath,
@@ -91,10 +86,12 @@ def generate_question(question_type: str):
             print("AssertionError occured; trying again...")
             continue
 
-    question = qa_dict["question"]
-    if "options" in qa_dict.keys():
-        question += "\n\n" + re.sub(r"(, )?([B-E]\))", r"\n\2", qa_dict["options"])
-    answer = f'{qa_dict["answer"]}\n\nSource: {article_name.split(" _ RadioGraphics.html")[0]}'
+    question = qa_json["question"]
+    if "options" in qa_json.keys():
+        question += "\n\nOptions:"
+        for c in ["A", "B", "C", "D", "E"]:
+            question += "\n" + qa_json["options"][c]
+    answer = f'{qa_json["answer"]}\n\nSource: {article_name.split(" _ RadioGraphics.html")[0]}'
 
     return [figpath, question, answer]
 
@@ -142,7 +139,7 @@ def run_gui():
             elem_id="title",
         )
         gr.HTML(
-            "Pouria Rouzrokh, MD, MPH, MHPE<sup>1,2</sup>, Mark M. Hammer, MD<sup>1</sup>, Christine (Cooky) O. Menias, MD<sup>1</sup>",
+            "Pouria Rouzrokh, MD, MPH, MHPE<sup>1,2</sup>, Bradley J. Erickson, MD, PhD<sup>2</sup>, Mark M. Hammer, MD<sup>1</sup>, Christine (Cooky) O. Menias, MD<sup>1</sup>",
             elem_id="authors_list",
         )
         gr.HTML(
@@ -180,12 +177,10 @@ def run_gui():
             with gr.Row():
                 question_type = gr.Dropdown(
                     choices=[
-                        "Random",
                         "Multiple choice",
                         "Short answer (suitable for flash cards)",
-                        "Open-ended (suitable for essay exams)",
                     ],
-                    value="Random",
+                    value="Multiple choice",
                     label="Question type:",
                     interactive=True,
                     elem_id="normal",

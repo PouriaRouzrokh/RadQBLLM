@@ -30,6 +30,14 @@ run the `demo/notebook_demo.ipynb` file to run the pipeline in a notebook enviro
 
 ```python
 
+### 11/22/2023:
+- Changed the pipeline to multiagent with a radiologist and an educationst agent to 
+collaborately work together for generating the questions.
+- There is no such a thing as "format editor" model anymore. The radiologist agent
+will always generate responses in json format.
+- The only supported question types are MCQs and Short-Answer (Flashcard) questions.
+- Majorly revised the prompts.
+
 ### 11/02/2023:
 
 - Added the `gradio_demo.py` file to include the GUI for the pipeline.

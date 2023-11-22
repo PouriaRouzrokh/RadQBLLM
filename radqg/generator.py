@@ -30,8 +30,8 @@ class Generator:
         num_retrieved_chunks: int = configs.NUM_RETRIEVED_CHUNKS,
         collection_name: str = None,
         selected_articles: list = None,
-        generator_model: str = configs.OPENAI_GENERATOR_MODEL,
-        content_editor_model: str = configs.OPENAI_CONTENT_EDITOR_MODEL,
+        generator_model: str = configs.OPENAI_RADIOLOGIST_MODEL,
+        content_editor_model: str = configs.OPENAI_EDUCATOR_MODEL,
         format_editor_model: str = configs.OPENAI_FORMAT_EDITOR_MODEL,
     ):
         """The constructor of the Generator class."""
@@ -248,10 +248,7 @@ class Generator:
 
         # Generating the question and answer
         (
-            qa_dict,
-            llm1_response,
-            llm2_response,
-            llm3_response,
+            qa_json,
             total_tokens,
             total_price,
         ) = qa_fn(
@@ -265,12 +262,9 @@ class Generator:
         )
         if complete_return:
             return (
-                qa_dict,
-                llm1_response,
-                llm2_response,
-                llm3_response,
+                qa_json,
                 context,
                 total_tokens,
                 total_price,
             )
-        return qa_dict
+        return qa_json
