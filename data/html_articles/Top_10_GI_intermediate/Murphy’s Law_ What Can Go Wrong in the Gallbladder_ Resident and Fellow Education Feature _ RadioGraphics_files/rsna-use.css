@@ -1,0 +1,1594 @@
+.alookback
+
+{padding-top: 18px;
+    color: #000000;
+    border: 1px solid #cecece;
+    background-color: #e8f0f1;
+    margin-bottom: 20px;
+    margin-top: -40px;
+    line-height: 24px;
+    padding-left: 18px;
+    padding-right: 18px;}
+
+
+#ryblogbutton {
+     border-radius: 25px;
+    background: #47828f;
+    max-width: 400px;
+    max-height: 36px;
+    padding: 16px;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+
+
+/* caption text that appears below blog images, updated 1-24-23 DC and TK*/
+
+.photo-credit 
+
+{padding-top: -10px;
+    font-size: 10px;
+    font-style: italic; 
+    text-align: right;}
+
+
+/* RG TEAM TOP 10, updated 12-6-21 TK*/
+
+.rgteamtoptenmenu
+
+{border: 1px solid #cecece;
+padding-top:5px;
+    margin-top: 20px;
+    margin-bottom: 20px;}
+
+.rgteamtoptenbackground
+{
+    background-color: #e5e5e5;
+    padding-top: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;}
+    
+.jrnl-radiographics .rgteamtoptenbackground .creative-work__title
+
+{font-size:14px;
+line-height: 19px;
+margin-bottom:4px;}
+
+
+.jrnl-radiographics .rgteamtoptenbackground .creative-work .loa a 
+
+{font-size: 11px;}
+
+
+.rgteamtoptenbackground .teaser__meta__date-label, .teaser__meta__date-val 
+
+{font-size: 10px;
+    line-height: 2px;
+    color: #000000;}
+
+.rgteamtoptenbackground li .creative-work 
+
+
+{padding-bottom: 2px;}
+
+    
+
+.rgteamtoptenbackground .creative-work {
+    margin-bottom: 2px;}
+
+
+.rgteamtoptenbackground .teaser__meta {font-size: 4px;
+    margin-bottom: 12px;}
+
+
+
+.rgteamtoptenbackground2 {
+    background-color: #f2f2f2;
+    padding-top: 15px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;}
+    
+.jrnl-radiographics .rgteamtoptenbackground2 .creative-work__title
+
+{font-size:14px;
+line-height: 19px;
+margin-bottom:4px;}
+
+
+.jrnl-radiographics .rgteamtoptenbackground2 .creative-work .loa a 
+
+{font-size: 11px;}
+
+
+.rgteamtoptenbackground2 .teaser__meta__date-label, .teaser__meta__date-val 
+
+{font-size: 10px;
+    line-height: 2px;
+    color: #000000;}
+
+.rgteamtoptenbackground2 li .creative-work 
+
+
+{padding-bottom: 2px;}
+
+    
+
+.rgteamtoptenbackground2 .creative-work {
+    margin-bottom: 2px;}
+    
+.rgteamtoptenbackground2 .teaser__meta {font-size: 4px;
+    margin-bottom: 12px;}
+
+
+/* CARDIO PAGE */
+
+
+.cardiorebuilthomepage .creative-work__title
+
+{color: #67001b;
+height:auto;
+font-size:16px;}
+
+.ctihometabcolor a:not(.article__tocHeading)
+
+{color:#67001b;} 
+
+
+
+/* extra space below bio text for RGTEAM pg, updated 12-7-20 TK*/
+
+.rgteambiotext
+
+{padding-bottom:30px;}
+
+.jrnl-radiographics h3
+
+{color: #000;}
+
+
+/* Share menu background white, updated 12-2-20 TK*/
+
+.share__block {background-color: #FFF;}
+
+
+/* Square house ad space with no border and no ad placeholder, updated 10-20-20 TK*/
+
+.square-house-ad-space
+
+{display: block;
+  margin-left: auto;
+  margin-right: auto;
+width:300px;}
+
+
+.header .about__menu__toggler {
+    display: inline-block;
+    margin: -10px 0;
+    padding: 0;}
+
+.ritmenu
+{width: calc(100%)}
+
+
+
+.covidiirboxtest
+{border: 1px solid #cecece;}
+
+.ryct-podcast-home {
+    background-color: #FFFFFF;
+    padding: 15px 10px 8px 10px;
+    border: solid 1px #bababa;
+    min-width: 0;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    margin-top: -10px;
+    margin-right: 8px;
+}
+
+.ryct-podcast-home-text {
+    font-size: 13px;
+    line-height: 20px;
+    color: #000000; }
+
+
+.covidthumbnailimage
+{margin-top:-10px;}
+
+.iframe-container {
+  overflow: hidden;
+ padding-bottom: 75%;
+  position: relative;
+}
+
+/*   padding-top: 98%; */
+ 
+ 
+.iframe-container iframe {
+   border: 0;
+   height: 98%;
+   left: 0;
+   position: absolute;
+   top: 0;
+   width: 100%;
+}
+
+
+.covidspectrum
+{border: 1px solid #cecece;
+margin-bottom: 30px;
+    padding-top: 10px;
+    padding-left: 10px;
+padding-right:2px;}
+
+
+
+.covidreviewbox
+{border: 1px solid #cecece;
+padding-right:20px;
+padding-left:20px;
+margin-top:30px;}
+
+
+.covidbottomboxheader
+{margin-top: 10px;}
+
+.covidlettersbox
+{border: 1px solid #cecece;
+    padding-right: 20px;
+    padding-left: 5px;
+    padding-top: 20px;
+    margin-top: 30px;
+    margin-left: -10px;}
+
+.covidiirbox
+{border: 1px solid #cecece;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-top: 20px;
+    margin-top: 30px;
+    margin-left: -10px;}
+
+
+.covidoriginalresearchbox
+{margin-top:50px;}
+
+.covidorheading
+{padding-left:14px;}
+
+.covidlatestheading
+{margin-top:-2px;
+font-weight:bold;}
+
+.rycticovidhighlight
+{margin-top:30px;}
+
+.owl-carousel.owl-drag .owl-item .covidslidertest
+{margin-top: -25px;}
+
+.covidslidertestheader
+{padding-top:20px;
+padding-left:30px;
+font-weight:bold;
+color:#404040;
+margin-bottom:-20px;}
+
+.covidslidertest
+{height:650px;
+margin-bottom:30px;
+background-color:#f2f2f2;
+font-size:15px;}
+
+
+/* Radiology Podcast on the coronavirus page, updated Feb 6 2020, TK*/
+
+.covidpodcastheading
+{font-size:15px;
+font-weight:bold;
+padding-left:4px;
+margin-bottom:22px;}
+
+.ry-podcast-coronavirus
+{background-color: #FFFFFF;
+    padding: 12px 10px 0px 10px;
+    border: solid 2px #e2e2e2;
+    min-width: 0;
+    margin-bottom: 20px;
+    margin-top: -10px;}
+
+
+
+/***Final - Special Focus General template/page styles - Jan 2020 - tk ***/
+
+.testrightside
+{margin-left:10px;}
+
+.covidcaselink
+{padding-top:0px;
+padding-left:4px;
+font-size:14px;}
+
+.coronavirus-ryct-logo
+{margin-bottom:10px;}
+
+.Slidercoronavirus
+{background-color:#f2f2f2;}
+
+.SFarticletype
+{margin-left:15px;
+color:#666666;}
+
+.SFarticletype1article
+{margin-left:0px;
+color:#666666;}
+
+.SFlogos 
+{margin-bottom:10px;}
+
+.SFcasebox { 
+background-color: #e0e7f0;
+padding-top: 20px;
+padding-bottom: 10px;
+padding-left: 24px;
+margin-bottom:20px;}
+
+.SFsubmissionbox { 
+background-color: #e0e7f0;
+padding-top: 20px;
+padding-bottom: 20px;
+padding-left: 24px;
+margin-bottom:40px;}
+
+.SFsubmissionjournal1 
+{margin-bottom:10px;}
+
+.SFsubmissionjournal2 
+{margin-top:162px;}
+
+.primary-theme .SFheader
+{background-color: #f5f5f5;
+height: 75px;
+padding: 15px 0;}
+
+.primary-theme .SFheader320
+{background-color: #f5f5f5;}
+
+.SFfooter 
+{
+ padding: 17px 0;
+    font-size: 12px;
+    font-size: .75rem;
+font-weight:700;
+color:#ffffff;
+background-color: #1f3f7a;}
+
+
+.covidtestbackground
+
+
+{background-image: url(/pb-assets/Special-Focus/Coronavirus/testbackground.png);
+position: absolute;
+z-index: initial;
+height: 112px;
+width:100%;
+background-size: cover;
+background-color:#000000;}
+
+
+
+
+.SFbackground
+
+{background-image: url(/pb-assets/Special-Focus/SF-background-template.png);
+position: absolute;
+z-index: initial;
+height: 200px;
+width:100%;
+background-size: cover;
+background-color:#000000;}
+
+
+.COVID19background
+
+{background-image: url(/pb-assets/Special-Focus/Coronavirus/SF-coronavirus-background.png);
+position: absolute;
+z-index: initial;
+height: 200px;
+width:100%;
+background-size: cover;
+background-color:#000000;}
+
+
+
+
+
+/***.SFleftcolumn .creative-work {width:320px;}**/
+
+
+/***Final - EVALI page styles - Jan 2020 - tk **/
+
+.SFEVALIbackground {}
+
+
+
+/***Test Pages - EVALI page styles - Dec '19-Jan '20***/
+
+
+
+/***.evalicolumn .creative-work {width:320px;}**/
+
+.evalilogo
+{margin-bottom:10px;}
+
+.evaliboxtest
+{padding-left:10px;
+  margin-top: -20px;
+    margin-right: -20px;}
+
+.evalisubmit {
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-right: 25px;
+    padding-bottom: 20px;
+    background-color: #e0e7f0;
+    border-style: solid;
+    border-color: #e0e7f0;
+    border-width: 1px;
+    margin-bottom: 0px;}
+
+.evsubmit {
+    background-color: #e0e7f0;
+padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 24px;
+ }
+
+.esubtop {
+    margin-bottom:10px;
+ }
+
+.esubbottom
+{margin-top:162px;}
+
+
+/*** box on the about pages tk****/
+
+.submitbox {
+    width: 300px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-style: solid;
+    border-color: #919699;
+    border-width: 2px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    margin-top: 25px;
+}
+
+
+
+
+.evalitabs
+ {font-size: 14px;}
+
+.evaliboxtest2
+{padding: 10px;
+    background-color: #fff;}
+
+.evali-top-box {
+    background-color: #FFFFFF;
+    padding: 15px 10px 8px 10px;
+    border: solid 1px #bababa;
+    min-width: 0;
+    margin-left: 10px;
+    margin-bottom: 20px;
+    margin-top: -10px;
+    margin-right: 10px;
+ position: absolute;}
+
+
+/*** test -  11-11-19 tk****/
+
+
+.boxtest
+{border: solid #cecece 1px; margin-top:10px; padding:20px;}
+.footer-test {background-color: #000000;}
+
+.primary-theme .testnov22
+{background-color: #f5f5f5;
+height: 75px;
+padding: 15px 0;}
+
+.evalifootertest1
+{
+ padding: 17px 0;
+    font-size: 12px;
+    font-size: .75rem;
+font-weight:700;
+color:#ffffff
+background-color:#005daa;}
+
+
+
+
+.homepage .evalitest
+
+{background-image: url(/pb-assets/Microsite/test-images/background.png);
+position: absolute;
+z-index: initial;
+height: 200px;
+width:100%;
+background-size: cover;
+background-color:#000000;}
+
+
+.homepage .evalitest2
+
+{background-image: url(/pb-assets/Microsite/test-images/background2.png);
+position: absolute;
+z-index: initial;
+height: 200px;
+width:100%;
+background-size: cover;
+background-color:#000000;}
+
+
+/*** IC Test homepages -  8-29-19 tk****/
+
+
+.jrnl-imaging-cancer .ic-test-banner-1
+
+{background-image: url(/pb-assets/images/background-tests/IC-banneroption4.jpg);
+position: absolute;
+z-index: initial;
+height: 200px;
+width:100%;
+background-size: cover;
+background-color:#4b87b1;}
+
+.jrnl-imaging-cancer .ic-test-banner-2
+
+{background-image: url(/pb-assets/images/background-tests/IC-banneroption4.jpg);
+position: absolute;
+    z-index: initial;
+height: 200px;
+width:100%;
+background-size: cover;
+background-color:#4b87b1;}
+
+.jrnl-imaging-cancer .ic-test-banner-3
+
+{background-image: url(/pb-assets/images/background-tests/IC-banneroption4.jpg);
+position: absolute;
+    z-index: initial;
+height: 200px;
+width:100%;
+background-size: cover;
+background-color:#4b87b1;}
+
+
+.jrnl-imaging-cancer .ic-test-banner-4
+
+{background-image: url(/pb-assets/images/background-tests/IC-banneroption4.jpg);
+position: absolute;
+    z-index: initial;
+height: 200px;
+width:100%;
+background-size: cover;
+background-color:#4b87b1;}
+
+.jrnl-imaging-cancer .ic-test-banner-5
+
+{background-image: url(/pb-assets/images/background-tests/IC-banneroption5.jpg);
+position: absolute;
+    z-index: initial;
+height: 200px;
+width:100%;
+background-size: cover;
+background-color:#4b87b1;}
+
+
+
+/* RY journal menu line space 7-12-19, TK*/
+.jrnl-radiology .about__menu li a
+{line-height:15px;}
+
+/* color for copyright on supplement pages 5-8-19, TK*/
+
+.copyright {color: #000000;}
+
+/* Small updates to RG podcast page 4-26-19, TK*/
+
+.rgsharepodcast
+{padding-top:10px; padding-left:10px;}
+
+.rg-podsummary-box
+{margin-top: 75px; margin-left:-10px; margin-bottom:10px;}
+
+
+/*** CTI page links to bold - 4/23/19 - tk ***/
+
+
+/*** .jrnl-cardiothoracic .article__body a 
+{font-weight:bold;}  ***/
+
+/*** AI blog tab color  - 4/16/19 - tk ***/
+
+.jrnl-ai .tab__nav .active a
+{border-bottom-color: #a68a7c;}
+
+
+/*** AI loi tab color  - 3/28/19 - tk ***/
+
+.jrnl-ai .loi__list .active a
+{border-bottom: 4px solid #A68A7C;}
+
+
+/*** Bold styling to links on Author Services page - 3/15/19 - tk ***/
+
+div.authoredServices a:not(.article__tocHeading) 
+{font-weight:bold;}
+
+/*** Cancer. PIA - menu -  3-13-19 dc****/
+
+.cancer_pia {
+	font-size: 14px; 
+	line-height:21px; 
+	padding-right:20px; 
+	padding-left:10px;}
+.cancer_pia a:link {
+	color:#4b87b1; 
+	font-weight:bold;
+	text-decoration: none;}
+.cancer_pia a:visited{
+	color:#4b87b1;}
+.cancer_pia a:hover{
+	color:#aaaaaa;}
+.cancer_pia a:active{
+	color:#4b87b1;} 
+
+.cancer_pia h1 {
+	font-size: 20px;
+    padding-top: 0;
+    margin-top: 0;
+    color:  #000000;
+    padding-bottom: 2px;
+    line-height: 26px;
+    margin-bottom: 20px; }
+
+.cancer_pia h2 {
+    color: #000000;
+    margin-top: 0;
+	padding-top:5px;
+	font-size: 17px;
+    padding-top: 0; 
+    margin-bottom: 12px; 
+	border-bottom: 1px solid #000000;}
+
+.cancer_pia h3 {
+    color: #000000;
+    margin-bottom: 10px;}
+
+.cancer_pia_menu_box {
+	border: 1px solid #919699;
+    padding:16px;
+	margin-bottom:30px;
+	font-size:13px;
+	line-height:20px;}
+
+.cancer_pia_menu ul {
+	list-style: none;
+ 	padding:0;
+ 	margin:0;}
+
+.cancer_pia_menu li {
+	color:#aaaaaa;
+    line-height: 20px;
+    padding-left: 6px;
+    text-indent: -10px;
+    padding-bottom: 10px;}  
+
+.cancer_pia_menu  {
+	font-size: 14px;
+	border: 1px solid #919699;
+	background: #f0f0f0;
+	padding: 17px;
+ 	width: 100%;
+	font-weight: bold;
+	margin-bottom: 20px;
+	line-height:15px;}
+
+.cancer_pia_menu a:link {
+	color:#4b87b1;  
+	font-weight: bold; 
+	text-decoration: none;}
+.cancer_pia_menu a:visited{color:#4b87b1;}
+.cancer_pia_menu a:hover{color:#aaaaaa;}
+.cancer_pia_menu a:active{color:#4b87b1;} 
+
+
+
+/* email account sign-up box, updated 3-13-19, TK*/
+.emailbox
+{border-bottom:1px; solid; #000000;
+margin-bottom:20px;}
+
+
+.emailboxlink
+{width:300px;
+padding:10px;
+background-color: #e8f0f2;
+border-style: solid;
+border-color: #919699;
+border-width: 2px;
+font-size:16px;
+font-weight:bold;
+margin-bottom:25px;
+margin-top:25px;
+}
+
+
+/* New Radiology blog, updated  */
+.rad-blog-entry {
+	background-color: #e8f0f1;
+    padding: 5px 0px 15px 10px;
+    border: solid 1px #F5F5F5;}
+
+.rad-blog-entries {
+	border-bottom:solid 1px #000000;
+	padding-bottom:10px;}
+
+.rad-blog-authors-bottom {
+	padding: 20px;
+    line-height: 28px;
+    background-color: #e8f0f1;}
+
+.rad-blog-photo-bottom {
+	padding-right:20px;
+	width:90px;
+	float: left;}
+	
+.rad-blog-post {
+	font-size: 14px; line-height:21px;
+	padding-right:20px;}
+
+.rad-blog-post a:link {
+	color:#47828f;  
+	font-weight: bold; 
+	text-decoration: none;}
+
+.rad-blog-post  a:visited{color:#47828f;}
+.rad-blog-post  a:hover{color:#aaaaaa;}
+.rad-blog-post  a:active{color:#47828f;} 
+
+
+/* Breadcrumbs to white, updated 1-31-19, TK*/
+
+.breadcrumbs-home
+{color: #FFFFFF;}
+
+.breadcrumbs-home a:link {color:#FFFFFF;}
+
+/* Small updates to RY podcast page 1-31-19, TK*/
+
+
+.jrnl-radiology .sharepodcast
+{padding-top:10px; padding-left:10px;}
+
+.ry-podcast-badges
+{margin-left: -50px;}
+
+.ry-podcast-summary-box
+{margin-top: 75px; margin-left:-10px;}
+
+
+/* AI blog box on homepage, updated 1-11-19, TK*/
+
+.ai-blogbox-homepage-logotype
+
+{width:260px;
+padding-bottom:10px;}
+
+.ai-blogbox-homepage
+{background-color: #FFFFFF;
+    padding: 15px 4px 0px 10px;
+    border: solid 1px #cecece;
+    min-width: 0;
+    margin-left: 10px;
+    margin-bottom: 20px;
+margin-top:-10px;
+    margin-right: 10px;}
+
+
+.ai-blogbox-homepage-text
+{font-size:13px;
+line-height:20px;
+color:#000000;
+margin-right:10px;
+margin-top:-10px;
+}
+
+.ai-blogbox-homepage-headshot
+{align:right;}
+
+
+.ai-blogbox-homepage a:link {color:#9d8075;  font-weight: bold; text-decoration: none;}
+
+
+.ai-blogbox-homepage a:visited{color:#9d8075;}
+
+.ai-blogbox-homepage a:hover{color:#aaaaaa;}
+
+.ai-blogbox-homepage a:active{color:#9d8075;} 
+
+
+
+
+/*** RY Top 10 -  1-10-19 tk****/
+
+
+.ry-top-10 li {padding-bottom:10px; line-height:20px;}
+
+
+.ry-top-10 a:link {color:#47828f;  font-weight: bold; text-decoration: none;}
+
+
+.ry-top-10 a:visited{color:#47828f;}
+
+
+.ry-top-10 a:hover{color:#aaaaaa;}
+
+
+.ry-top-10 a:active{color:#47828f;} 
+
+
+/*** AI Test homepages -  1-10-19 tk****/
+
+
+.jrnl-ai .ai-test-banner-1
+
+{background-image: url(/pb-assets/images/background-tests/ai-banner-test-1.png);
+position: absolute;
+z-index: initial;
+height: 200px;
+width:100%;
+background-size: cover;
+background-color:#f5f5f5;}
+
+
+.jrnl-ai .ai-test-banner-2
+
+{background-image: url(/pb-assets/images/background-tests/ai-banner-test-2.png);
+position: absolute;
+    z-index: initial;
+height: 200px;
+width:100%;
+background-size: cover;
+background-color:#f5f5f5;
+
+}
+
+
+.jrnl-ai .ai-test-banner-3
+
+{background-image: url(/pb-assets/images/background-tests/ai-banner-test-3.png);
+position: absolute;
+    z-index: initial;
+height: 200px;
+width:100%;
+background-size: cover;
+background-color:#f5f5f5;
+
+}
+
+
+
+
+/*** Cardio PIA -  10-1-18 tk****/
+
+.cardiothoracic_pia
+
+{font-size: 14px; line-height:21px;
+padding-right:20px; padding-left:10px;}
+
+.cardiothoracic_pia a:link {color:#67001B; font-weight:bold;
+	text-decoration: none;}
+
+.cardiothoracic_pia a:visited {color:#67001B;}
+.cardiothoracic_pia a:hover {color:#aaaaaa;}
+.cardiothoracic_pia a:active {color:#67001B;} 
+
+.cardiothoracic_pia h1 {
+font-size: 20px;
+    padding-top: 0;
+    margin-top: 0;
+    color:  #000000;
+    padding-bottom: 2px;
+    line-height: 26px;
+    margin-bottom: 20px; 
+}
+
+.cardiothoracic_pia h2 {
+    color: #000000;
+    margin-top: 0;
+padding-top:5px;
+font-size: 17px;
+    padding-top: 0; 
+    margin-bottom: 12px; 
+border-bottom: 1px solid #000000;
+}
+
+.cardiothoracic_pia h3 {
+    color: #000000;
+    margin-bottom: 10px; 
+}
+
+
+
+
+
+
+/*** All Custom Pages, General Styling -  9-25-18 tk****/
+
+.general-page-style
+
+{font-size: 14px; line-height:21px;
+padding-right:20px; padding-left:10px;}
+
+.general-page-style a:link {font-weight:bold;
+	text-decoration: none;}
+
+
+
+
+/*** RG Suppelement "Meeting Exhibits" section-  8-6-18 tk****/
+
+.rg-meeting-exhibit
+{margin-bottom:20px;}
+
+.rg-meeting-exhibit a:link {
+font-weight: bold; 
+}
+
+
+/*** Cardio. PIA - menu -  8-5-18 tk****/
+
+
+.cardio_pia_menu_box {
+border: 1px solid #919699;
+    padding:16px;
+margin-bottom:30px;
+font-size:13px;
+line-height:20px;
+}
+
+.cardio_pia_menu ul {
+ 
+list-style: none;
+ 
+padding:0;
+ 
+margin:0;}
+
+.cardio_pia_menu li {
+
+color:#aaaaaa;
+    
+line-height: 20px;
+    
+padding-left: 6px;
+    
+text-indent: -10px;
+    
+padding-bottom: 10px;
+}
+
+
+.cardio_pia_menu  {
+
+font-size: 14px;
+
+border: 1px solid #919699;
+
+background: #f0f0f0;
+
+padding: 17px;
+ 
+width: 100%;
+font-weight: bold;
+margin-bottom: 20px;
+line-height:15px;
+}
+
+
+.cardio_pia_menu a:link {
+color:#67001B;  
+font-weight: bold; 
+	
+text-decoration: none;}
+
+
+.cardio_pia_menu a:visited{color:#67001B;}
+
+.cardio_pia_menu a:hover{color:#aaaaaa;}
+
+.cardio_pia_menu a:active{color:#67001B;} 
+
+
+
+/* New policies page, updated 8-31-18, TK*/
+
+.policies_box {
+    border: 1px solid #919699;
+    padding:16px;
+margin-bottom:30px;
+font-size:13px;
+line-height:20px;
+}
+
+
+.policies_indent {
+   line-height:15px;
+}
+
+.policies {font-size: 14px; line-height:21px;
+padding-right:20px; padding-left:10px;}
+
+select-opener {
+color: #7f8fae;
+}
+
+.policies h1 {
+font-size: 20px;
+    padding-top: 0;
+    margin-top: 0;
+    color:  #666666;
+    padding-bottom: 2px;
+    line-height: 110%;
+    margin-bottom: 20px; 
+}
+
+.policies a:link {font-weight:bold;}
+
+.policies h2 {
+    color: #666666;
+    margin-top: 0;
+padding-top:5px;
+font-size: 17px;
+    padding-top: 0; 
+    margin-bottom: 12px; 
+border-bottom: 1px solid #919699
+}
+
+.policies h3 {
+    color: #666666;
+    margin-bottom: 10px; 
+}
+
+.policies_back_to_top {
+     display:inline-block;
+     padding-bottom: 20px; 
+}
+
+
+.col-xs-12
+{margin-bottom:30px;}
+
+.blog-bar
+{background-color: #cecece;
+border:1px solid #cecece;}
+
+/* AI blog styling for expanded page, updated 8-21-18, TK*/
+
+.ai-blog-post 
+
+{font-size: 14px; line-height:21px;
+padding-right:20px;}
+
+.ai-blog-post a:link {
+color:#A68A7C;  
+font-weight: bold; 
+	
+text-decoration: none;}
+
+
+.ai-blog-post  a:visited{color:#A68A7C;}
+
+.ai-blog-post  a:hover{color:#aaaaaa;}
+
+.ai-blog-post  a:active{color:#A68A7C;} 
+
+
+
+
+
+/* AI blog styling for landing page, updated 8-21-18, TK*/
+.ai-blog-entry
+{background-color: #F5F5F5;
+    padding: 5px 0px 15px 10px;
+    border: solid 1px #F5F5F5;}
+
+/* AI blog styling, updated 8-10-18, TK*/
+.ai-blog-entries
+
+{border-bottom:solid 1px #000000;
+padding-bottom:10px;}
+
+.ai-blog-authors-bottom
+
+{padding: 20px;
+    line-height: 28px;
+    background-color: #e1e1e1;
+}
+
+.ai-blog-photo-bottom
+
+{padding-right:20px;
+width:90px;
+float: left; 
+}
+
+.ai-blog-bottom-box-container-2023
+
+{
+    padding: 20px;
+    background-color: #e1e1e1;
+float:left;
+
+}
+
+.ai-blog-bottom-box-contents-2023
+
+{padding: 0;
+    line-height: 28px;}
+
+.ai-blog-bottom-box-photo-2023
+
+{ width: 90px;
+    float: left;
+}
+
+
+
+
+/* Radiology Podcast on the homepage, updated 8-6-18, TK*/
+
+.ry-podcast-home-text
+{font-size:13px;
+line-height:20px;
+color:#000000;
+margin-right:10px;
+margin-top:-10px;
+}
+
+.ry-podcast-home-headshot
+{align:right;}
+
+
+/**New Editor photos (alignment with text above) (tk 8-6-18)****/
+
+.editor-bio-photos
+{margin-left:-10px;
+margin-top:10px;}
+
+/**Needed changes to institution logos so they fit better in the top navbar (tk 7-13-18)****/
+
+.institution__image
+
+{height:40px; 
+float:left; 
+padding-right:15px;
+}
+
+
+/*** In "Main menu" -> "Journals", needed to increase the leading with the inclusion of "Radiology: Artificial Intelligence"   7-3-18 tk****/
+
+.main-nav .dropdown .dropdown__menu li a
+{line-height:16px;}
+
+/*** A.I. PIA - menu -  6-29-18 tk****/
+
+
+.ai_policies_menu_box {
+border: 1px solid #919699;
+    padding:16px;
+margin-bottom:30px;
+font-size:13px;
+line-height:20px;
+}
+
+.pia_menu ul {
+ 
+list-style: none;
+ 
+padding:0;
+ 
+margin:0;}
+
+.pia_menu li {
+
+color:#868686;
+    
+line-height: 20px;
+    
+padding-left: 6px;
+    
+text-indent: -10px;
+    
+padding-bottom: 10px;
+}
+
+
+.pia_menu  {
+
+font-size: 14px;
+
+border: 1px solid #919699;
+
+background: #f0f0f0;
+
+padding: 17px;
+ 
+width: 100%;
+font-weight: bold;
+margin-bottom: 20px;
+line-height:15px;
+}
+
+
+.pia_menu a:link {
+color:#997773;  
+font-weight: bold; 
+	
+text-decoration: none;}
+
+
+.pia_menu a:visited{color:#997773;}
+
+.pia_menu a:hover{color:#aaaaaa;}
+
+.pia_menu a:active{color:#997773;} 
+
+
+/*** A.I. PIA - pages - 6-29-18 tk****/
+
+.whats-new
+{padding-left:20px;
+padding-top:20px;
+padding-right:25px;
+padding-bottom:10px;
+background-color: #e8f0f2;
+border-style: solid;
+border-color: #919699;
+border-width: 1px;
+margin-bottom:30px;}
+
+
+.skipto_box {
+    border: 1px solid #919699;
+    padding-left:10px;
+margin-bottom:30px;
+}
+
+
+.top_links {
+   font-size:15px;
+}
+
+.pia_indent {
+   line-height:15px;
+}
+
+.radiology_pia 
+
+{font-size: 14px; line-height:21px;
+padding-right:20px; padding-left:10px;}
+
+.radiology_pia a:link {color:#997773; font-weight:bold;
+	text-decoration: none;}
+
+.radiology_pia a:visited{color:#997773;}
+
+.radiology_pia a:hover{color:#aaaaaa; text-decoration:line;}
+
+.radiology_pia a:active{color:#997773;} 
+
+.ry-logo img {
+    height:95px;
+    width:auto; 
+    padding-left: 20px;
+}
+
+select-opener {
+color: #7f8fae;
+}
+
+
+
+.radiology_pia {
+    /* no new style defined */
+}
+
+.radiology_pia h1 {
+font-size: 20px;
+    padding-top: 0;
+    margin-top: 0;
+    color:  #666666;
+    padding-bottom: 2px;
+    line-height: 26px;
+    margin-bottom: 20px; 
+}
+
+.radiology_pia h2 {
+    color: #666666;
+    margin-top: 0;
+padding-top:5px;
+font-size: 17px;
+    padding-top: 0; 
+    margin-bottom: 12px; 
+border-bottom: 1px solid #919699
+}
+
+.radiology_pia h3 {
+    color: #666666;
+    margin-bottom: 10px; 
+}
+
+.pia_back_to_top {
+     display:inline-block;
+     padding-bottom: 20px; 
+}
+
+
+
+
+/*** Leading Adjustments on RY Slider Titles 5-18-18 tk****/
+
+.jrnl-radiology .journal-home__slide-text h1 {
+    line-height: 28px;}
+
+
+/*** Outstanding Widget Styling needed 5-16-18 tk****/
+
+/*** Widgets on global homepage ****/
+
+.col-xs-12
+{margin-left:-10px;}
+
+.col-xs-4
+{margin-left:-10px;}
+
+/*** .col-sm-4
+{margin-left:-10px;}****/
+
+
+
+
+
+/*** Main Global homepage (TK 5/16/18)*****/
+
+
+.publications
+{font-size:14px;}
+
+.publications .col-sm-4
+{margin-left:-10px;}
+
+.publications a:link {color:#003986;  font-weight: bold; 
+	text-decoration: none;}
+
+.publications a:hover{color:#aaaaaa;}
+
+
+.publications .h2
+{font-size: 1.7em;
+    color: #666666;
+    font-weight: bold;
+    padding-bottom: 0px;}
+
+.publications .h3
+{font-size: 14px;
+    color: #666666;
+    font-weight: bold;
+    padding-bottom: 0px;}
+
+
+.publications .three-logos
+{margin-left:-14px;}
+
+.publications .col-xs-12
+{margin-bottom: 10px;
+margin-top:10px;}
+
+/*******Global Help Menu (TK 5/10/18)**************/
+
+
+.help-menu  
+{font-size: 14px;
+    border: 1px solid #cecece;
+    background: #f0f0f0;
+    padding: 17px;
+ width: 100%;
+  font-weight: bold; 
+   line-height:15px;
+}
+
+.help-menu ul {
+    list-style: none;
+    padding:0;
+    margin:0;}
+
+.help-menu li {
+color:#868686;
+    line-height: 20px;
+    padding-left: 6px;
+    text-indent: -10px;
+    padding-bottom: 10px;
+}
+
+
+.help-box {
+ font-size: 13px;
+    padding-bottom: 5px;
+    line-height: 18px;
+}
+
+
+.help-pages a:link {font-weight: bold;}
+.help-pages h3 {margin-bottom:-8px;}
+.help-emails {line-height:22px;}
+
+/* Radiology Podcast on the homepage, updated May 10, TK*/
+
+.ry-podcast-home
+{ background-color: #FFFFFF;
+    padding: 15px 10px 8px 10px;
+    border: solid 1px #bababa;
+margin-bottom: 20px;
+margin-top:10px;
+display:block;
+width: 300px;
+margin-left: auto;
+margin-right: auto;}
+
+
+
+
+
+
+
+/* RadioGraphics Podcast on the homepage, updated May 16, TK*/
+
+.rg-podcast-home
+{ background-color: #FFFFFF;
+    padding: 15px 10px 8px 10px;
+    border: solid 1px #d4d4d4;
+    min-width: 0;
+    margin-left: 10px;
+    margin-bottom: 20px;
+margin-top:-10px;
+    margin-right: 10px;}
+
+
+
+/* Added 4-26-2018 for testing purposes only (global homepage color) */ 
+
+
+
+/* lighter - #9ea0c1*/ 
+
+.footer-bottom
+{background-color: #7f81b4;}
+
+/* Added 4-27-2018 -- height of background images */ 
+
+.jrnl-radiographics .top-image {
+    height: 210px;}
+
+.jrnl-radiology .top-image {
+    height: 210px;}
+
+
+
+
+
+
+
+
+
+/* End of new test CSS added */ 
+
+.whats-new
+{padding-left:20px;
+padding-top:20px;
+padding-right:25px;
+padding-bottom:10px;
+background-color: #e8f0f2;
+border-style: solid;
+border-color: #919699;
+border-width: 1px;
+margin-bottom:30px;}
+
+.abrheading
+{color: #ac012b;}
+
+.abrindent {
+padding-left: 20px;
+}
+
+.abrbutton {
+
+    background-color: #e9e9e9;
+
+    border: 1px solid gray;
+    border-top: none;
+
+    color: #ac012b;
+ 
+    padding: 15px 32px;
+
+    text-align: center;
+    text-decoration: none;
+
+    display: inline-block;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    width: 310px;
+    
+    height: 50px;
+
+    display: block;
+
+}
+
+
+
+.abrbuttontop {
+    
+    background-color: #e9e9e9;
+
+    border: 1px solid gray;
+
+    color: #ac012b;
+
+    padding: 15px 32px;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    display: inline-block;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    width: 310px;
+    
+    height: 50px;
+
+    display: block;
+
+}
+
+.abrback {
+    font-size: 12px;
+    text-align: right;
+    font-style: italic;
+} 
+
+.shareheading {
+ margin-right: -40px;}
+
+.sharemovedown {
+ margin-top: 5px}

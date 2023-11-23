@@ -1,0 +1,146 @@
+(function() {
+	/*\
+	|*|
+	|*|  :: cookies.js ::
+	|*|
+	|*|  A complete cookies reader/writer framework with full unicode support.
+	|*|
+	|*|  Revision #3 - July 13th, 2017
+	|*|  Adapted for use for the RSNA on Jan, 18, 2019
+	|*|  by Daniel Clancy
+	|*|
+	|*|  https://developer.mozilla.org/en-US/docs/Web/API/document.cookie
+	|*|  https://developer.mozilla.org/User:fusionchess
+	|*|  https://github.com/madmurphy/cookies.js
+	|*|
+	|*|  This framework is released under the GNU Public License, version 3 or later.
+	|*|  http://www.gnu.org/licenses/gpl-3.0-standalone.html
+	|*|
+	|*|  Syntaxes:
+	|*|
+	|*|  * RSNACookies.setItem(name, value[, end[, path[, domain[, secure]]]])
+	|*|  * RSNACookies.getItem(name)
+	|*|  * RSNACookies.removeItem(name[, path[, domain]])
+	|*|  * RSNACookies.hasItem(name)
+	|*|  * RSNACookies.keys()
+	|*|
+	\*/
+
+	var cookiePolicyVersion = 'v1';
+
+	var readMoreLink = 'https://www.rsna.org/about/rsna-cookie-policy';
+
+	var RSNACookies = {
+		getItem: function (sKey) {
+			if (!sKey) { return null; }
+			return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
+		},
+		setItem: function (sKey, sValue, vEnd, sPath, sDomain, bSecure) {
+			if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+			var sExpires = "";
+			if (vEnd) {
+				switch (vEnd.constructor) {
+					case Number:
+						sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; max-age=" + vEnd;
+						/*
+						Note: Despite officially defined in RFC 6265, the use of `max-age` is not compatible with any
+						version of Internet Explorer, Edge and some mobile browsers. Therefore passing a number to
+						the end parameter might not work as expected. A possible solution might be to convert the the
+						relative time to an absolute time. For instance, replacing the previous line with:
+						*/
+						/*
+						sExpires = vEnd === Infinity ? "; expires=Fri, 31 Dec 9999 23:59:59 GMT" : "; expires=" + (new Date(vEnd * 1e3 + Date.now())).toUTCString();
+						*/
+						break;
+					case String:
+						sExpires = "; expires=" + vEnd;
+						break;
+					case Date:
+						sExpires = "; expires=" + vEnd.toUTCString();
+						break;
+				}
+			}
+			document.cookie = encodeURIComponent(sKey) + "=" + encodeURIComponent(sValue) + sExpires + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "") + (bSecure ? "; secure" : "");
+			return true;
+		},
+		removeItem: function (sKey, sPath, sDomain) {
+			if (!this.hasItem(sKey)) { return false; }
+			document.cookie = encodeURIComponent(sKey) + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT" + (sDomain ? "; domain=" + sDomain : "") + (sPath ? "; path=" + sPath : "");
+			return true;
+		},
+		hasItem: function (sKey) {
+			if (!sKey || /^(?:expires|max\-age|path|domain|secure)$/i.test(sKey)) { return false; }
+			return (new RegExp("(?:^|;\\s*)" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=")).test(document.cookie);
+		},
+		keys: function () {
+			var aKeys = document.cookie.replace(/((?:^|\s*;)[^\=]+)(?=;|$)|^\s*|\s*(?:\=[^;]*)?(?:\1|$)/g, "").split(/\s*(?:\=[^;]*)?;\s*/);
+			for (var nLen = aKeys.length, nIdx = 0; nIdx < nLen; nIdx++) { aKeys[nIdx] = decodeURIComponent(aKeys[nIdx]); }
+			return aKeys;
+		}
+	};
+
+	var node = document.createElement('div');
+	node.setAttribute('id', 'cookie-ct');
+
+	var nodeHTML = '';
+
+	nodeHTML += '<style>.cookie-popup {height: auto; width: 100%; bottom: 0px; display: block;margin: 0;padding: 5px;right: 0;width: 100%;text-align: center;z-index: 99999; position: fixed;background-color: rgba(25, 35, 68, 0.95); animation: slide-up 0.4s ease;}';
+	nodeHTML += '@keyframes slide-up { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } } @keyframes slide-down { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(20px); } }';
+	nodeHTML += '.popup-content {padding: 10px;max-width: 980px;margin: 0 auto;}';
+	nodeHTML += '.popup-text {display: inline-block;max-width: 60%;vertical-align: middle;color: white; font-family: arial; font-weight: bold;font-size: 12px;text-align: left; }';
+	nodeHTML += '.popup-buttons {display: inline-block;max-width: 40%;vertical-align: middle;}';
+	nodeHTML += '.cookie-popup button {border: none;border-radius: .25rem;padding: 5px;min-width: 130px;font-family: arial;font-weight: bold;margin: 5px; cursor: pointer; font-size: 12px;}';
+	nodeHTML += '.cookie-popup .agree-button {background-color: #dc5826;color: #ffffff;transition: 0.15s ease-in;}';
+	nodeHTML += '.cookie-popup .agree-button:hover { background-color: #bd4a1f;color: #ffffff; transition: 0.15s ease-in;}';
+	nodeHTML += '.cookie-popup a {color: #dc5826;}';
+	nodeHTML += '.cookie-popup a:hover {color: #bd4a1f;}';
+	nodeHTML += '.cookie-popup .find-more-button {background-color: #0073d2;color: #ffffff;transition: 0.15s ease-in;}';
+	nodeHTML += '.cookie-popup .find-more-button:hover { background-color: #005daa;color: #ffffff;transition: 0.15s ease-in;}</style>';
+
+	nodeHTML += '<div class="cookie-popup" id="cookie-popup">';
+	nodeHTML += '<div class="popup-content">';
+	nodeHTML += ' <div class="popup-text">';
+	nodeHTML += ' To help offer the best experience possible, RSNA uses cookies on its site. By browsing here, you acknowledge our terms of use. To find more information about our cookie policy visit <a href="' + readMoreLink + '" target="_blank">here</a>.';
+	nodeHTML += '</div>';
+	nodeHTML += '<div class="popup-buttons">';
+	nodeHTML += '<button type="button" class="agree-button" id="agree">OK</button>';
+	nodeHTML += '<button type="button" class="find-more-button" id="more">Find out more</button>';
+	nodeHTML += '</div>';
+	nodeHTML += '</div>';
+	nodeHTML += '</div>';
+
+	node.innerHTML = nodeHTML;
+
+	var domain = window.location.hostname;
+
+	var cookieDomain;
+
+	if(domain.indexOf('rsna.org') === -1) {
+		cookieDomain = domain;
+	} else {
+		cookieDomain = 'rsna.org';
+	}
+
+	if(RSNACookies.hasItem('CookiePolicy') && RSNACookies.getItem('CookiePolicy') != cookiePolicyVersion) {
+		RSNACookies.removeItem('CookiePolicy', '/', cookieDomain);
+	}
+
+	if(!RSNACookies.hasItem('CookiePolicy')) {
+		if (typeof window.prependCookiePolicy !== 'undefined' && window.prependCookiePolicy) {
+			document.body.prepend(node);
+		} else {
+			document.body.appendChild(node);
+		}
+
+		document.getElementById('agree').addEventListener('click', function() {
+				RSNACookies.setItem('CookiePolicy', cookiePolicyVersion, new Date(new Date().setFullYear(new Date().getFullYear() + 1)), '/', cookieDomain);
+				document.getElementById('cookie-popup').style.animationName = "slide-down";
+				setTimeout(function() {node.remove();}, 375);
+		})
+
+		document.getElementById('more').addEventListener('click', function() {
+				window.open(readMoreLink, '_blank');
+		})
+	}
+
+	})();

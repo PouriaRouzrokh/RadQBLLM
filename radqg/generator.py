@@ -30,9 +30,8 @@ class Generator:
         num_retrieved_chunks: int = configs.NUM_RETRIEVED_CHUNKS,
         collection_name: str = None,
         selected_articles: list = None,
-        generator_model: str = configs.OPENAI_RADIOLOGIST_MODEL,
-        content_editor_model: str = configs.OPENAI_EDUCATOR_MODEL,
-        format_editor_model: str = configs.OPENAI_FORMAT_EDITOR_MODEL,
+        radiologist_model: str = configs.OPENAI_RADIOLOGIST_MODEL,
+        educationist_model: str = configs.OPENAI_EDUCATOR_MODEL,
     ):
         """The constructor of the Generator class."""
 
@@ -45,9 +44,8 @@ class Generator:
         self.selected_articles = selected_articles
         self.generator_memory = dict()
         self.collection = self.create_collection()
-        self.generator_model = generator_model
-        self.content_editor_model = content_editor_model
-        self.format_editor_model = format_editor_model
+        self.radiologist_model = radiologist_model
+        self.educationist_model = educationist_model
 
     def create_collection(self) -> chromadb.Collection:
         """A method to create a collection of articles and figures from a given
@@ -246,25 +244,26 @@ class Generator:
         metadata.sort(key=lambda x: chunk_indices[metadata_copy.index(x)])
         context = "..." + "...".join(chunks) + "..."
 
-        # Generating the question and answer
-        (
-            qa_json,
-            total_tokens,
-            total_price,
-        ) = qa_fn(
-            fignum,
-            caption,
-            context,
-            type_of_question,
-            self.generator_model,
-            self.content_editor_model,
-            self.format_editor_model,
-        )
+        # Generating the question and answer while retrying in case of json failures (value errors)
+        while True:
+            try:
+                (
+                    qa_json,
+                    total_price,
+                    conversation_log,
+                ) = qa_fn(
+                    fignum,
+                    caption,
+                    context,
+                    type_of_question,
+                    self.radiologist_model,
+                    self.educationist_model,
+                )
+                break
+            except ValueError:
+                print("ValueError: Retrying...")
+                continue
+
         if complete_return:
-            return (
-                qa_json,
-                context,
-                total_tokens,
-                total_price,
-            )
+            return (qa_json, context, total_price, conversation_log)
         return qa_json

@@ -1,0 +1,222 @@
+.do-link-podcast:before {
+    content: "\e96a";
+    speak: none;
+    font-style: normal;
+    font-weight: 400;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    padding-right: 8px;
+    font-size: 25px;
+    font-size: 1.5625rem;
+    position: relative;
+    top: 4px;
+    display: inline-block;
+    /* text-decoration: underline; */
+    font-family: icomoon!important;
+	padding-bottom: 10px;
+}
+.rlist--inline.comma-do>li {
+  display:inline-flex
+}
+
+.comma-do i[class*=icon-] {
+   padding-left:5px;
+}
+
+.journal-home__slide-text p
+{color: #000000;}
+.meta__info
+{color: #000000;}
+
+.DODenialWidget .citation, .DODenialWidget .epub-section, .DODenialWidget .coolBar, .DODenialWidget .sticko__parent{
+display: none;
+}
+
+div.sharepodcast {
+	min-height: 60px;
+}
+
+.content.static-pages .container {
+ padding-top: 20px;
+}
+#pb-editor header {
+  position: relative!important;
+}
+#pb-editor .content {
+  padding-top: 0;
+  min-height: auto!important;
+}
+#pb-editor .pb-dropzone {
+  min-width: 50px;
+}
+#pb-editor footer {
+  margin-top: 0;
+}
+#pb-page-content .test-ad {
+  margin: 20px;
+}
+#pb-page-content .support-feature img {
+  border-radius: 15px;
+}
+#pb-page-content .homepage .btn--inverse {
+  color: #fff;
+  border: 1px solid #fff;
+}
+#pb-page-content .homepage .btn--inverse:hover {
+  background: #4176A5;
+}
+#pb-page-content .meta__eissn {
+  font-size: 12.96px;
+  font-size: .81rem;
+  font-weight: 700;
+}
+#pb-page-content .quick-search-advanced-link {
+  line-height: 38px;
+}
+#pb-page-content .card--newsletter {
+  margin: 30px auto;
+  width: 300px;
+}
+#pb-page-content .sep {
+  margin-top: 15px;
+}
+.cover-meta-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cover-meta-wrap img {
+  width: 150px;
+  margin: 10px;
+}
+.cover-meta-wrap .meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cover-meta-wrap .meta strong {
+  display: block;
+  margin-bottom: 10px;
+}
+.article__metrics,
+.article__history {
+  margin-bottom: 10px;
+}
+.title_altmetric {
+    border-top: 1px solid #e1e1e1;
+    padding-top: 30px;
+}
+#pb-page-content .quote-text {
+  margin-top: 20px;
+  font-style: italic;
+  font-size: 15px;
+}
+#pb-page-content .quote-attribution {
+  font-weight: bold;
+  font-size: 15px;
+}
+#pb-page-content .profile-pages h3 {
+  color: inherit;
+  font-size: 1.25rem;
+}
+#pb-page-content .profileMain .managedInstitutions {
+  position: absolute;
+  right: 0;
+  top: -50px;
+  z-index: 9;
+}
+#pb-page-content .profileMain .managedInstitutions > div {
+  display: flex;
+  align-items: center;
+}
+#pb-page-content .profileMain .managedInstitutions > div select {
+  width: auto;
+  margin-left: 10px;
+  margin-bottom: 0;
+}
+#pb-page-content .profileMain .managedInstitutions > div label {
+  margin-bottom: 0;
+}
+#pb-page-content .addresses .state:first-of-type {
+  display: none;
+}
+#pb-page-content .extraPageTitle {
+  display: none;
+}
+#pb-page-content .administratorsWidget .container {
+  width: auto;
+  padding: 0;
+}
+#pb-page-content .ipRangesWidget {
+  padding-bottom: 20px;
+  border-bottom: 4px solid;
+  margin-bottom: 20px;
+}
+#pb-page-content ul.search-tabs-nav {
+  display: none;
+}
+#pb-page-content #search-history-panel ul {
+  list-style-type: none;
+  padding: 0;
+}
+#pb-page-content #search-history-panel ul header h3 {
+  color: #959595;
+  font-size: 14px;
+  font-size: .875rem;
+  font-weight: 600;
+}
+#pb-page-content .advancedSearch__tabs {
+  border-bottom: 1px solid #e1e1e1;
+  margin: 0 -15px 20px;
+  padding: 0 15px 20px;
+}
+#pb-page-content #frmSearch:after {
+  clear: both;
+  content: " ";
+  display: table;
+}
+#pb-page-content .saved-searches th {
+  padding-top: 0;
+}
+#pb-page-content .table-of-content .left-side-image img {
+  width: 100%;
+}
+#pb-page-content .citationFormats .formats label {
+  display: inline-block;
+}
+#pb-page-content .citationFormats .formats input {
+  margin-bottom: 0;
+  vertical-align: middle;
+}
+#pb-page-content .citationFormats .formats th {
+  width: 150px;
+  vertical-align: top;
+}
+@media (max-width: 500px) {
+  #pb-page-content .citationFormats .formats th {
+    width: 90px;
+  }
+}
+#pb-page-content .eCommerceCheckoutBuyingItemsWidget .offerDescription {
+  font-weight: normal;
+}
+
+.col-xs-12 > form > .actions {
+  padding-left: 0;
+}
+
+.col-xs-12 > form > .actions .button {
+  margin-top: 5px;
+}
+.coolBar [data-db-target-of] {
+  position: absolute;
+}
+#pb-page-content .pub-pages-about .about__block {
+  top: 38px;
+  right: -5px;
+  width: 180px;
+}
+.loi__banner .pub-pages-about a {
+  padding: 0 10px;
+}

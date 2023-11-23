@@ -21,7 +21,7 @@ VERBOSE = True
 # Path configs
 # ----------------------------------------------------------------------------------------
 
-TOY_DATA_DIR = redirect_path("data/html_articles")
+DATA_DIR = redirect_path("data/html_articles/Top_10_GI_R4")
 VECTOR_DB_DIR = redirect_path("data/vector_db")
 
 # ----------------------------------------------------------------------------------------
@@ -37,8 +37,8 @@ OPENAI_EDUCATOR_MODEL = "gpt-4"
 # ----------------------------------------------------------------------------------------
 
 NUM_RETRIEVED_CHUNKS = 3
-CHUNK_SIZE = 1500
-CHUNK_OVERLAP = 500
+CHUNK_SIZE = 1000
+CHUNK_OVERLAP = 200
 
 # ----------------------------------------------------------------------------------------
 # GradIO arguments

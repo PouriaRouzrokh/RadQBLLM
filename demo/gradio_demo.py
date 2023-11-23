@@ -52,7 +52,7 @@ def generate_question(question_type: str):
 
         # Setting up the generator
         generator = Generator(
-            data_dir=configs.TOY_DATA_DIR,
+            data_dir=configs.DATA_DIR,
             embed_fn=openai_embed_fn,
             selected_articles=articles_to_include_full_names,
         )

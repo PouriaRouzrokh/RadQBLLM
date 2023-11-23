@@ -30,6 +30,12 @@ run the `demo/notebook_demo.ipynb` file to run the pipeline in a notebook enviro
 
 ```python
 
+### 11/23/2023:
+- Optimized the prompts.
+- Optimized the OpenAI pipeline.
+- Added the GI R4 Top 10 Reading list articles.
+- Generated 50 MCQ and 50 SA questions for each article.
+
 ### 11/22/2023:
 - Changed the pipeline to multiagent with a radiologist and an educationst agent to 
 collaborately work together for generating the questions.

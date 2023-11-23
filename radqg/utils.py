@@ -5,6 +5,7 @@
 import os
 import pathlib
 import tiktoken
+from typing import Union, List
 
 # ----------------------------------------------------------------------------------------
 # redirect_path
@@ -33,10 +34,14 @@ def redirect_path(path: str, counter_limit: int = 10) -> str:
 # count_tokens
 
 
-def count_tokens(string: str, encoding_name: str = "gpt-3.5-turbo") -> int:
+def count_tokens(input: Union[List, str], encoding_name: str = "gpt-3.5-turbo") -> int:
     """Count the number of tokens in a string."""
 
     encoding = tiktoken.encoding_for_model(encoding_name)
-    num_tokens = len(encoding.encode(string))
+    if isinstance(input, list):
+        full_str = "".join([d["content"] for d in input])
+    elif isinstance(input, str):
+        full_str = input
+    num_tokens = len(encoding.encode(full_str))
 
     return num_tokens
